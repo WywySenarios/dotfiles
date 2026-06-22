@@ -1,3 +1,3 @@
-[submodule "plugins/opencode-rbash"]
-	path = plugins/opencode-rbash
+[submodule ".opencode/plugins/opencode-rbash"]
+	path = .opencode/plugins/opencode-rbash
 	url = https://github.com/WywySenarios/opencode-rbash

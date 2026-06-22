@@ -4,6 +4,9 @@
   "instructions": [
     "{file:/etc/Wywy-Website-Control/AGENTS.shared.md}"
   ],
+  "plugin": [
+    "./plugins/opencode-rbash/src/index.ts"
+  ],
   "agent": {
     "plan": {
       "disable": true
