@@ -1,1 +1,1 @@
-export OPENCODE_CONFIG_DIR=$HOME/WywySenarios/.opencode
+export OPENCODE_CONFIG_DIR=$HOME/dotfiles/.opencode
