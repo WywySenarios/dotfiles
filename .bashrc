@@ -59,4 +59,3 @@ if [ -d "$bashrc_d" ]; then
   unset file
 fi
 unset bashrc_d
-export PATH=$PATH:/usr/local/go/bin
