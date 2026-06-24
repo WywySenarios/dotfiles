@@ -74,6 +74,7 @@ Any other bash command will be denied. If you need a command outside this list (
 ### Write the test
 
 - Test names must be unique across a service
+- Name the test to describe the expected behaviour: `test_<what>_<when>_<then>`
 - Use existing test fixtures, factories, and helpers. Do not invent new machinery yet.
 - The test must exercise the **exact code path** the production code will use.
 - Assert on the **specific outcome**, not on implementation details.
@@ -109,6 +110,11 @@ silent no-op.
 | `import { Button } from "./button"` | Button lacks `asChild` | Existing file, but stub already resolves — no action |
 | `import { ThemeProvider } from "next-themes"` | Package not installed | Add to `package.json`, run `npm install` |
 | `window.matchMedia` unavailable | jsdom environment | Add mock to `tests/unit/setup.ts` |
+
+### Run the test — confirm it fails for the right reason
+
+- The failure must match the **missing feature or bug**. A wrong failure means a wrong test — fix the test, not the production code.
+- If the test passes without any new code, the feature already exists or the test is not testing the right thing. Investigate before proceeding.
 
 ## Output
 
