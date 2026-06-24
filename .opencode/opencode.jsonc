@@ -11,7 +11,7 @@
   },
   "permission": {
     "edit": {
-      "**/.opencode/plans/*": "deny",
+      "**/.opencode/plans/**": "deny",
       "**/.opencode/plan.md": "deny",
       "**/.opencode/Plan.md": "deny",
       "**/.opencode/PLAN.md": "deny"
