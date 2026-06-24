@@ -79,6 +79,37 @@ Any other bash command will be denied. If you need a command outside this list (
 - Assert on the **specific outcome**, not on implementation details.
 - Test files mirror source files (e.g. `src/x.py` → `tests/test_x.py`).
 
+### Resolve imports — create stubs, not no-ops
+
+Make sure the test does **not** fail because of a missing import or unresolved module.
+If the test imports a function, component, or module that does not exist yet, create a
+**stub** — a skeleton that resolves the import but fails with a clear signal, not a
+silent no-op.
+
+1. Create a **stub file** at the expected import path.
+2. The stub MUST export the name the test imports, and its body **must raise
+   `NotImplementedError`** with a descriptive message. This makes the import resolve
+   while telling both the test runner and the Green phase exactly what is missing.
+3. If the stub requires a third-party package that is not yet installed, add it to
+   `package.json` and run the package manager's install command before proceeding.
+4. Kill any other environment blockers (missing `window.matchMedia`, missing globals,
+   etc.) via setup files or mocks so the test fails on *behaviour*, not environment.
+
+**Why `NotImplementedError` is better than a no-op:**
+- The test fails loudly, not silently — no risk of a false positive.
+- The stack trace pinpoints exactly which function still needs implementation.
+- The Green phase receives a clear checklist of what to implement: every function that
+  throws `NotImplementedError`.
+
+#### Examples
+
+| Test imports | Doesn't exist | Action |
+|---|---|---|
+| `import { cn } from "../../lib/utils"` | `src/lib/utils.ts` | Create `src/lib/utils.ts` with `export function cn(...args: any[]) { throw new NotImplementedError("cn") }` |
+| `import { Button } from "./button"` | Button lacks `asChild` | Existing file, but stub already resolves — no action |
+| `import { ThemeProvider } from "next-themes"` | Package not installed | Add to `package.json`, run `npm install` |
+| `window.matchMedia` unavailable | jsdom environment | Add mock to `tests/unit/setup.ts` |
+
 ## Output
 
 ### Report to user

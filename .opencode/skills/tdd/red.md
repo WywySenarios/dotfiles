@@ -13,17 +13,18 @@
 - The test must exercise the **exact code path** the production code will use.
 - Assert on the **specific outcome**, not on implementation details.
 
-## Resolve imports — create bare skeletons
+## Resolve imports — create stubs, not no-ops
 
-Before running the test, make sure it does **not** fail because of a missing import or
-unresolved module.  If the test imports a function, component, or module that does not
-exist yet:
+Make sure the test does **not** fail because of a missing import or unresolved module.
+If the test imports a function, component, or module that does not exist yet, create a
+**stub** — a skeleton that resolves the import but fails with a clear signal, not a
+silent no-op.
 
-1. Create a **bare skeleton** file at the expected import path.
-2. The skeleton MUST export the name the test imports, but its body should be empty or
-   return a no-op — enough to make the import resolve, but not enough to satisfy the
-   assertions.
-3. If the skeleton requires a third-party package that is not yet installed, add it to
+1. Create a **stub file** at the expected import path.
+2. The stub MUST export the name the test imports, and its body **must raise
+   `NotImplementedError`** with a descriptive message. This makes the import resolve
+   while telling both the test runner and the Green phase exactly what is missing.
+3. If the stub requires a third-party package that is not yet installed, add it to
    `package.json` and run the package manager's install command before proceeding.
 4. Kill any other environment blockers (missing `window.matchMedia`, missing globals,
    etc.) via setup files or mocks so the test fails on *behaviour*, not environment.
@@ -32,16 +33,22 @@ exist yet:
 
 | Test imports | Doesn't exist | Action |
 |---|---|---|
-| `import { cn } from "../../lib/utils"` | `src/lib/utils.ts` | Create `src/lib/utils.ts` with `export function cn() { return "" }` |
-| `import { Button } from "./button"` | Button lacks `asChild` | Existing file, but skeleton already resolves — no action |
+| `import { cn } from "../../lib/utils"` | `src/lib/utils.ts` | Create `src/lib/utils.ts` with `export function cn(...args: any[]) { throw new NotImplementedError("cn") }` |
+| `import { Button } from "./button"` | Button lacks `asChild` | Existing file, but stub already resolves — no action |
 | `import { ThemeProvider } from "next-themes"` | Package not installed | Add to `package.json`, run `npm install` |
 | `window.matchMedia` unavailable | jsdom environment | Add mock to `tests/unit/setup.ts` |
 
 ### Why
 
-A test that fails with `Module not found` or `window.matchMedia is not a function` tells
-you nothing about the feature.  A test that fails because `expect(theme).toBe("dark")`
-returned `undefined` tells you exactly what behaviour is missing.
+- A test that fails with `Module not found` or `window.matchMedia is not a function`
+  tells you nothing about the feature.
+- A test that fails because `expect(theme).toBe("dark")` returned `undefined` tells you
+  exactly what behaviour is missing.
+- **`NotImplementedError` is better than a no-op** because:
+  - The test fails loudly, not silently — no risk of a false positive.
+  - The stack trace pinpoints exactly which function still needs implementation.
+  - The Green phase receives a clear checklist of what to implement: every function that
+    throws `NotImplementedError`.
 
 ## Run the test — confirm it fails for the right reason
 
