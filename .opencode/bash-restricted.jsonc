@@ -34,6 +34,10 @@
   // Executables in "allow" take precedence if there is overlap.
   "scripts": ["scripts/**"],
   "script_interpreters": ["bash", "node", "python3", "npx", "npm"],
+  "trusted_agents": ["scribe"],
+  "agents": [
+    {"name": "scribe", "mode": "primary"}
+  ],
   "settings": {
     "timeout_ms": 120000,
     "workdir_policy": "project"
