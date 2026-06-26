@@ -7,6 +7,25 @@ description: Commit changes in a Wywy service repository. Use when the user asks
 
 ## Workflow
 
+### 0. Preflight — artifact check
+
+Before staging any files, check whether the working tree contains untracked or modified files that look like build, test, or generated artifacts.
+
+Run:
+
+```bash
+git status --porcelain | grep -qE '^\?\?.*(dist/|build/|\.next/|out/|target/|coverage/|\.nyc_output/|\.godot/|export/|\.terraform/|__pycache__/|\.pytest_cache/|node_modules/|\.log$|\.pyc$|\.tfstate|\.DS_Store|Thumbs\.db)'
+```
+
+- **If this exits 0** (match found): **STOP.** Report back to the user listing which artifact files were detected. Explain that artifacts should not be committed — ask whether they want to:
+  - Add the relevant paths to `.gitignore`, **or**
+  - Remove / clean the artifacts, **or**
+  - Remove the offending files from the index if already staged, **or**
+  - Override the check and proceed anyway.
+  Do **not** continue until the user gives explicit guidance.
+
+- **If this exits 1** (no match): proceed with the normal commit workflow below.
+
 ### 1. Stage and review
 
 ```bash
