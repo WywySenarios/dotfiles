@@ -41,15 +41,7 @@ You operate on one test cycle at a time. Each cycle must complete before the nex
 
 ## Conventions
 
-Strive to follow conventions. If a convention is not available or applicable, **STOP**. Ask the user for guidance.
-
-### Language-specific conventions
-
-See [`/etc/Wywy-Website-Control/internal/conventions/languages/`](/etc/Wywy-Website-Control/internal/conventions/languages/). When writing code, ALWAYS check the applicable language convention files (at minimum `_shared.mdx`).
-
-### Convention exceptions
-
-Any violation of a convention that cannot be avoided MUST be accompanied by an inline comment starting with `CONVENTION-EXCEPTION:` citing the convention file and explaining why the exception is necessary. Missing or insufficient justification is a blocking review failure.
+See [Conventions in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
 
 ## Bash restrictions
 
@@ -145,9 +137,4 @@ When the Red phase completes, give a summary to the user with this template:
 
 ## Code References
 
-When referencing specific functions or pieces of code include the pattern `file_path:line_number` to allow the user to easily navigate to the source code location.
-
-<example>
-user: Where are errors from the client handled?
-assistant: Clients are marked as failed in the `connectToServer` function in src/services/process.ts:712.
-</example>
+See [Code References in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
