@@ -1,6 +1,6 @@
 ---
 description: TDD green phase
-agent: build
+agent: green
 ---
 
 $ARGUMENTS

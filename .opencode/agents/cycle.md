@@ -57,20 +57,20 @@ Delegate to the `red` subagent. Your prompt MUST include:
 
 ### Phase 2 — GREEN (make it pass)
 
-Delegate to the `build` subagent. Your prompt MUST include:
+Delegate to the `green` subagent. Your prompt MUST include:
 
 - The exact plan item text
 - The relevant service alias and repository path
-- The instruction: *"You are executing the GREEN phase of TDD. Write the minimal production code to make the failing test pass. You may NOT edit tests. Run the full test suite and confirm everything passes."*
+- The instruction: *"You are executing the GREEN phase of TDD. Write the minimal production code to make the failing test pass. You may NOT edit tests. Run the full test suite and confirm everything passes. If you determine a test edit is required, load the `request-test-edit` skill, fill out the template, and report back to me."*
 - Expected output: list of changed files, full test results (pass/fail counts).
 
 ### Phase 3 — REFACTOR (clean up)
 
-Delegate to the `build` subagent. Your prompt MUST include:
+Delegate to the `refactor` subagent. Your prompt MUST include:
 
 - The exact plan item text
 - The relevant service alias and repository path
-- The instruction: *"You are executing the REFACTOR phase of TDD. Clean up the code without changing behaviour. Run the full test suite after every change. Confirm all tests still pass."*
+- The instruction: *"You are executing the REFACTOR phase of TDD. Clean up the code without changing behaviour. Run the full test suite after every change. Confirm all tests still pass. If you determine a test edit is required, load the `request-test-edit` skill, fill out the template, and report back to me."*
 - Expected output: list of changed files, full test results, notes on what was cleaned up.
 
 ### After all items are done
@@ -86,8 +86,14 @@ When the last plan item has completed all three phases:
 If any phase determines a test must be modified (not a new test, but an edit to an existing test):
 
 1. **STOP** the current phase immediately.
-2. Report to the user with the test edit request details.
-3. **Do not proceed** until the user approves the test edit.
+2. The phase agent should load the `request-test-edit` skill and fill out the justification template, then report back to you.
+3. Review the request and present it to the user for approval.
+4. Once approved, delegate to the `test-editor` subagent. Your prompt MUST include:
+   - The test edit request details (justification, coverage, change type)
+   - The test file path(s) to edit
+   - The instruction: *"You are executing a test edit request. Apply the minimal change to satisfy the request. You may ONLY edit test files. Run the relevant tests and confirm they behave as expected."*
+   - Expected output: list of changed files, test results, edit type.
+5. After the edit is complete, resume the paused phase.
 
 ## Output
 
@@ -186,7 +192,7 @@ Output these so the user can read the conversation history later.
 
 ## Delegation notes
 
-- Always use `task` with `subagent_type: "red"` for the RED phase and `subagent_type: "build"` for the GREEN and REFACTOR phases. `explore` agents cannot edit files.
+- Always use `task` with `subagent_type: "red"` for the RED phase, `subagent_type: "green"` for the GREEN phase, `subagent_type: "refactor"` for the REFACTOR phase, and `subagent_type: "test-editor"` for test edit requests. `explore` agents cannot edit files.
 - Include full context in each delegation prompt — do not assume the subagent has seen previous messages.
 - Expect the subagent to report back with its results before you proceed.
 - If a subagent fails or produces an unexpected result, diagnose and retry the phase. Do not skip ahead.

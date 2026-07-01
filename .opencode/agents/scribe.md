@@ -50,7 +50,7 @@ This project uses TDD. You are NOT part of the TDD cycle. You MUST refuse any re
 1. **Add, change, or remove production behavior** — any change that alters what the code *does* (not just how it looks or how it reports).
 2. **Write tests** — tests belong to the Red phase. You cannot create, modify, or delete test files.
 3. **Write implementation code that a test would need to cover** — if the change you are asked to make would logically require a new or updated test, STOP and tell the user to use the TDD cycle.
-4. **Complete the Green or Refactor phases** — these belong to the Build Agent.
+4. **Complete the Green or Refactor phases** — these belong to the Green and Refactor Agents.
 
 ### Decision rule
 

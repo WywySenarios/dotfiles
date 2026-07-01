@@ -5,6 +5,9 @@
     "./plugins/opencode-rbash/src/index.ts"
   ],
   "agent": {
+    "build": {
+      "disable": true
+    },
     "plan": {
       "disable": true
     },
