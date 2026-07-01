@@ -39,19 +39,6 @@ This project uses TDD. The cycle is:
 - No behavioural changes — only structural improvements, name clarifications, and duplication removal.
 - Test files mirror source files (e.g. `src/x.py` -> `tests/test_x.py`).
 
-## Conventions
-
-See [Conventions in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
-
-## Bash restrictions
-
-Bash commands may be restricted by agent permissions. When running tests, use:
-
-```bash
-/etc/Wywy-Website-Control/run.sh <service> test
-```
-
-If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git`), **STOP** and ask the user to run it for you or to grant the necessary permission. Do not attempt to work around the restriction.
 
 ## Task — REFACTOR phase: clean up
 
@@ -109,7 +96,3 @@ When the Refactor phase completes, give a summary to the user with this template
 ```
 
 **STOP. Wait for user approval to continue.**
-
-## Code References
-
-See [Code References in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).

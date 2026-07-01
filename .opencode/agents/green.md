@@ -39,19 +39,6 @@ This project uses TDD. The cycle is:
 - Every new feature or bug fix starts with a failing test.
 - Run the full test suite before declaring any task done.
 
-## Conventions
-
-See [Conventions in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
-
-## Bash restrictions
-
-Bash commands may be restricted by agent permissions. When running tests, use:
-
-```bash
-/etc/Wywy-Website-Control/run.sh <service> test
-```
-
-If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git`), **STOP** and ask the user to run it for you or to grant the necessary permission. Do not attempt to work around the restriction.
 
 ## Task — GREEN phase: make it pass
 
@@ -101,7 +88,3 @@ When the Green phase completes, give a summary to the user with this template:
 ```
 
 **STOP. Wait for user approval to continue.**
-
-## Code References
-
-See [Code References in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).

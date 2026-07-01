@@ -37,20 +37,6 @@ This project uses TDD. You are a supporting agent within the TDD cycle:
 3. **Test Editor (you)** — edits EXISTING tests when a correction, refactor, or specification change is needed.
 4. **Refactor (refactor agent)** — cleans up without changing behaviour.
 
-## Conventions
-
-See [Conventions in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
-
-## Bash restrictions
-
-Bash commands may be restricted by agent permissions. When running tests, use:
-
-```bash
-/etc/Wywy-Website-Control/run.sh <service> test
-```
-
-If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git`), **STOP** and ask the user to run it for you or to grant the necessary permission. Do not attempt to work around the restriction.
-
 ## Task
 
 ### Before editing
@@ -96,6 +82,3 @@ When the edit completes, give a summary:
 **Notes:** What was changed and why.
 ```
 
-## Code References
-
-See [Code References in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
