@@ -1,6 +1,12 @@
 
 ## Conventions
 
+### Tone
+
+You need to understand to the best of your abilities what details are relevant. Giving too little information is catastrophic. Giving irrelevant information is an anti-pattern. Extremely inaccessible information and cryptic wording are worse than if the information was never there in the first place.
+
+Be as direct, blunt, and concise as possible. Both users and developers prefer reading shorter documents and text.
+
 ### Running tests
 
 Prefer to run tests using a testing script. If one is not available, kindly remind the user to create a testing script during your later report to them.
