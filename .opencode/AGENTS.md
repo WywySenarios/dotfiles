@@ -27,14 +27,6 @@ When reporting the results of any phase or edit, use these canonical table forma
 | Failed | N |
 | Skipped | N |
 
-### Stopping for approval
-
-Every phase, edit, or report MUST end with:
-
-```
-**STOP. Wait for user approval to continue.**
-```
-
 ## Code References
 
 When referencing specific functions or pieces of code include the pattern `file_path:line_number` to allow the user to easily navigate to the source code location.
