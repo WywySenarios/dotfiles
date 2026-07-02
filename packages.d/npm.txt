@@ -1,0 +1,27 @@
+# npm.txt — packages installable via npm
+#
+# Global:  npm install -g $(awk '!/^#/ && !/^$/ {print $1}' packages.d/npm.txt)
+# Project: cd <project> && npm install $(awk '!/^#/ && !/^$/ {print $1}' packages.d/npm.txt)
+#
+# Source references:
+#   dotfiles/docs/FORMATTERS.md
+#   dotfiles/.opencode/opencode.jsonc
+#   dotfiles/README.md
+#   /etc/Wywy-Website-Control/scripts/install/ci.sh
+#   /etc/Wywy-Website-Control/.opencode/package.json
+
+# --- Global tools ---
+prettier              # multi-language formatter (can also be run via npx)
+
+# --- Astro app (Wywy-CI / Wywy-Codes) ---
+@astrojs/react
+@radix-ui/react-slot
+class-variance-authority
+clsx
+react
+react-dom
+tailwind-merge
+@astrojs/check
+@tailwindcss/vite
+tailwindcss
+typescript

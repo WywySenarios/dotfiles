@@ -1,0 +1,48 @@
+# apt.txt — packages installable via apt
+#
+# Install: sudo apt install -y $(awk '!/^#/ && !/^$/ {print $1}' packages.d/apt.txt)
+#
+# Source references:
+#   dotfiles/docs/FORMATTERS.md
+#   dotfiles/.bashrc.d/completion/bash_completion.sh
+#   /etc/Wywy-Website-Control/install.sh
+#   /etc/Wywy-Website-Control/scripts/install/ci.sh
+#   /etc/Wywy-Website-Control/scripts/install/dev.sh
+#   /etc/Wywy-Website-Control/docs/architecture/leader-installation.mdx
+#   /etc/Wywy-Website-Control/scripts/install/preseeds/proxmox/preseed.cfg
+#   /etc/Wywy-Website-Control/scripts/install/preseeds/proxmox/build-proxmox-iso.sh
+
+# --- System core ---
+git
+acl
+build-essential
+bash-completion
+curl
+gnupg
+openssh-server
+ifupdown2
+
+# --- Languages / formatters ---
+shfmt
+golang-go
+rustfmt
+cargo
+clang-format
+nodejs
+npm
+python3-pip
+python3-venv
+pipx
+
+# --- Deployment ---
+containerd
+docker.io
+docker-compose-v2
+kubelet
+kubeadm
+kubectl
+proxmox-ve
+postfix
+open-iscsi
+xorriso
+syslinux-utils

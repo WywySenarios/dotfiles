@@ -15,6 +15,17 @@
       "disable": true
     }
   },
+  "formatter": {
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"]
+    },
+    "shfmt": {},
+    "ruff": {},
+    "gofmt": {},
+    "rustfmt": {},
+    "clang-format": {},
+    "air": {}
+  },
   "permission": {
     "edit": {
       "**/.opencode/plans/**": "deny",

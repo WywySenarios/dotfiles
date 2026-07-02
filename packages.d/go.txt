@@ -1,0 +1,9 @@
+# go.txt — Go modules (go get)
+#
+# Install: awk '!/^#/ && !/^$/ {print $1}' packages.d/go.txt | xargs -n1 go get
+#
+# Source references:
+#   /etc/Wywy-Website-Control/scripts/install/ci.sh
+
+modernc.org/sqlite             # Pure-Go SQLite driver
+github.com/coder/websocket     # WebSocket library for Go
