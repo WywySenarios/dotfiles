@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+"""
+Query the opencode conversation database.
+
+Usage:
+  analyze <command> [options]
+
+Commands:
+  recent         Latest 20 sessions with message/part counts
+  search <kw>    Search sessions by title/slug keyword
+  transcript <id> Full transcript of a session
+  tools          Tool calls in recent sessions
+  top-tools      Most-used tools overall
+  errors         Failed/errored tool calls
+  usage          Token and cost usage by agent type
+  daily          Daily usage summary (last 14 days)
+  models         Model usage breakdown
+  todos          Recent todo items
+  list           List all available commands
+
+Use --limit N to change row limits (default depends on the command).
+Use --db <path> to specify a non-default database location.
+"""
+
+import sqlite3
+import json
+import os
+import argparse
+import sys
+
+DB = os.path.expanduser("~/.local/share/opencode/opencode.db")
+
+
+def connect(db):
+    conn = sqlite3.connect(db)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def print_rows(rows):
+    for row in rows:
+        print(json.dumps(dict(row), default=str, indent=2))
+
+
+def cmd_recent(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT s.id, s.slug, s.title, s.agent,
+               s.cost, s.tokens_input, s.tokens_output, s.tokens_reasoning,
+               datetime(s.time_created / 1000, 'unixepoch') AS created,
+               datetime(s.time_updated / 1000, 'unixepoch') AS updated,
+               (SELECT COUNT(*) FROM message m WHERE m.session_id = s.id) AS messages,
+               (SELECT COUNT(*) FROM part p WHERE p.session_id = s.id) AS parts
+        FROM session s
+        ORDER BY s.time_created DESC
+        LIMIT ?
+    """, (args.limit,))
+    print_rows(cur.fetchall())
+
+
+def cmd_search(conn, args):
+    if not args.keyword:
+        print("error: 'search' requires a keyword argument", file=sys.stderr)
+        sys.exit(1)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id, slug, title, agent,
+               datetime(time_created / 1000, 'unixepoch') AS created
+        FROM session
+        WHERE title LIKE ? OR slug LIKE ?
+        ORDER BY time_created DESC
+        LIMIT ?
+    """, (f'%{args.keyword}%', f'%{args.keyword}%', args.limit))
+    print_rows(cur.fetchall())
+
+
+def cmd_transcript(conn, args):
+    if not args.session_id:
+        print("error: 'transcript' requires a session_id argument", file=sys.stderr)
+        sys.exit(1)
+    cur = conn.cursor()
+
+    cur.execute("SELECT slug, title, agent FROM session WHERE id = ?", (args.session_id,))
+    s = cur.fetchone()
+    if not s:
+        print(f"Session not found: {args.session_id}", file=sys.stderr)
+        sys.exit(1)
+    print(f"=== {s['slug']} — {s['title']} ({s['agent']}) ===")
+
+    cur.execute("""
+        SELECT m.id, m.time_created,
+               json_extract(m.data, '$.role') AS role,
+               json_extract(m.data, '$.agent') AS agent
+        FROM message m
+        WHERE m.session_id = ?
+        ORDER BY m.time_created
+    """, (args.session_id,))
+    for msg in cur.fetchall():
+        role = msg["role"] or "?"
+        agent = msg["agent"] or ""
+        print(f"\n--- {role}" + (f" ({agent})" if agent else "") + " ---")
+
+        cur2 = conn.cursor()
+        cur2.execute("SELECT data FROM part WHERE message_id = ? ORDER BY time_created", (msg["id"],))
+        for part_row in cur2.fetchall():
+            d = json.loads(part_row[0])
+            t = d.get("type")
+            if t == "text":
+                text = d.get("text", "")
+                if args.full_text:
+                    print(text)
+                else:
+                    print(text[:500] + ("..." if len(text) > 500 else ""))
+            elif t == "reasoning":
+                rtext = d.get("text", "")
+                preview = rtext[:200].replace("\n", " ")
+                print(f"  [reasoning] {preview}...")
+            elif t == "tool":
+                tool = d.get("tool", "?")
+                status = d.get("state", {}).get("status", "?")
+                inp = d.get("state", {}).get("input", {})
+                print(f"  [tool:{tool}] ({status}) input={json.dumps(inp)}")
+            elif t == "step-finish":
+                toks = d.get("tokens", {})
+                cost = d.get("cost", 0)
+                print(f"  [step] tokens={toks.get('total', '?')} cost={cost}")
+            elif t == "patch":
+                print(f"  [patch] files={d.get('files', [])}")
+            elif t == "compaction":
+                print(f"  [compaction] auto={d.get('auto')}")
+
+
+def cmd_tools(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT p.session_id, s.slug, s.title,
+               json_extract(p.data, '$.tool') AS tool,
+               json_extract(p.data, '$.state.status') AS status,
+               json_extract(p.data, '$.callID') AS call_id,
+               datetime(p.time_created / 1000, 'unixepoch') AS created,
+               substr(json_extract(p.data, '$.state.output'), 1, 100) AS output_preview
+        FROM part p
+        JOIN session s ON s.id = p.session_id
+        WHERE json_extract(p.data, '$.type') = 'tool'
+          AND p.session_id IN (SELECT id FROM session ORDER BY time_created DESC LIMIT ?)
+        ORDER BY p.time_created DESC
+        LIMIT 50
+    """, (args.limit,))
+    print_rows(cur.fetchall())
+
+
+def cmd_top_tools(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT json_extract(data, '$.tool') AS tool,
+               COUNT(*) AS calls,
+               COUNT(DISTINCT session_id) AS sessions
+        FROM part
+        WHERE json_extract(data, '$.type') = 'tool'
+        GROUP BY tool
+        ORDER BY calls DESC
+        LIMIT ?
+    """, (args.limit,))
+    print_rows(cur.fetchall())
+
+
+def cmd_errors(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT p.session_id, s.title, s.slug,
+               json_extract(p.data, '$.tool') AS tool,
+               json_extract(p.data, '$.callID') AS call_id,
+               datetime(p.time_created / 1000, 'unixepoch') AS created
+        FROM part p
+        JOIN session s ON s.id = p.session_id
+        WHERE json_extract(p.data, '$.type') = 'tool'
+          AND json_extract(p.data, '$.state.status') = 'error'
+        ORDER BY p.time_created DESC
+        LIMIT ?
+    """, (args.limit,))
+    print_rows(cur.fetchall())
+
+
+def cmd_usage(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT agent,
+               COUNT(*) AS sessions,
+               SUM(cost) AS total_cost,
+               SUM(tokens_input) AS total_input,
+               SUM(tokens_output) AS total_output,
+               SUM(tokens_reasoning) AS total_reasoning,
+               SUM(tokens_cache_read) AS total_cache_read,
+               SUM(tokens_cache_write) AS total_cache_write
+        FROM session
+        WHERE agent IS NOT NULL
+        GROUP BY agent
+        ORDER BY total_cost DESC
+    """)
+    print_rows(cur.fetchall())
+
+
+def cmd_daily(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT date(time_created / 1000, 'unixepoch') AS day,
+               COUNT(*) AS sessions,
+               SUM(cost) AS total_cost,
+               SUM(tokens_input) AS total_input,
+               SUM(tokens_output) AS total_output
+        FROM session
+        WHERE time_created > (strftime('%%s', 'now') - ? * 86400) * 1000
+        GROUP BY day
+        ORDER BY day DESC
+    """, (args.days,))
+    print_rows(cur.fetchall())
+
+
+def cmd_models(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT json_extract(model, '$.id') AS model,
+               json_extract(model, '$.providerID') AS provider,
+               COUNT(*) AS sessions,
+               SUM(cost) AS total_cost,
+               SUM(tokens_input) AS total_input,
+               SUM(tokens_output) AS total_output
+        FROM session
+        WHERE model IS NOT NULL
+        GROUP BY model, provider
+        ORDER BY total_cost DESC
+    """)
+    print_rows(cur.fetchall())
+
+
+def cmd_todos(conn, args):
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT t.session_id, s.title, s.slug, t.content, t.status, t.priority, t.position
+        FROM todo t
+        JOIN session s ON s.id = t.session_id
+        ORDER BY s.time_created DESC, t.position
+        LIMIT ?
+    """, (args.limit,))
+    print_rows(cur.fetchall())
+
+
+def cmd_list(conn, args):
+    print(__doc__.strip())
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Query opencode conversation history",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--db", default=DB, help="Path to opencode.db")
+    parser.add_argument("--limit", type=int, default=20, help="Row limit (default: 20)")
+    parser.add_argument("--days", type=int, default=14, help="Days of history for daily summary (default: 14)")
+    parser.add_argument("--full-text", action="store_true", help="Show full message text in transcripts")
+
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p = sub.add_parser("recent", help="Latest sessions")
+    p = sub.add_parser("search", help="Search sessions by keyword")
+    p.add_argument("keyword", nargs="?", help="Search keyword")
+
+    p = sub.add_parser("transcript", help="Full session transcript")
+    p.add_argument("session_id", nargs="?", help="Session ID (ses_*)")
+
+    p = sub.add_parser("tools", help="Tool calls in recent sessions")
+    p = sub.add_parser("top-tools", help="Most-used tools")
+    p = sub.add_parser("errors", help="Failed tool calls")
+    p = sub.add_parser("usage", help="Usage by agent type")
+    p = sub.add_parser("daily", help="Daily usage summary")
+    p = sub.add_parser("models", help="Model usage breakdown")
+    p = sub.add_parser("todos", help="Recent todos")
+    p = sub.add_parser("list", help="List all commands")
+
+    args = parser.parse_args()
+
+    if args.command == "list":
+        print(__doc__.strip())
+        return
+
+    if not os.path.exists(args.db):
+        print(f"Database not found: {args.db}", file=sys.stderr)
+        sys.exit(1)
+
+    conn = connect(args.db)
+    commands = {
+        "recent": cmd_recent,
+        "search": cmd_search,
+        "transcript": cmd_transcript,
+        "tools": cmd_tools,
+        "top-tools": cmd_top_tools,
+        "errors": cmd_errors,
+        "usage": cmd_usage,
+        "daily": cmd_daily,
+        "models": cmd_models,
+        "todos": cmd_todos,
+    }
+    commands[args.command](conn, args)
+    conn.close()
+
+
+if __name__ == "__main__":
+    main()
