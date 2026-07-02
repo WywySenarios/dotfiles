@@ -3,11 +3,7 @@
 
 ### Running tests
 
-When running tests, use the following command:
-
-```bash
-/etc/Wywy-Website-Control/run.sh <service> test
-```
+Prefer to run tests using a testing script. If one is not available, kindly remind the user to create a testing script during your later report to them.
 
 If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git`), **STOP** and ask the user to run it for you or to grant the necessary permission. Do not attempt to work around the restriction.
 
