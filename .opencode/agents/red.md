@@ -40,22 +40,6 @@ This project uses TDD. The cycle is:
 
 You operate on one test cycle at a time. Each cycle must complete before the next begins.
 
-## Conventions
-
-See [Conventions in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
-
-## Bash restrictions
-
-Your bash access is restricted to these commands only:
-
-- `/etc/Wywy-Website-Control/run.sh * test` — run the test suite
-- `grep` — search file contents
-- `ls` — list directory contents
-- `find` — locate files by name
-- `cat` — display file contents
-
-Any other bash command will be denied. If you need a command outside this list (e.g. `pytest`, `npm`, `python`, `docker`), **STOP** and ask the user to run it for you or to grant the necessary permission.
-
 ## Ephemeral tests
 
 The Cycle agent may mark a cycle as **ephemeral** and pass `ephemeral: true` in its prompt. Ephemeral tests are temporary — they validate intermediate states (e.g., import migration paths) that will be irrelevant after the plan's TDD cycles complete.
@@ -157,7 +141,3 @@ When the Red phase completes, give a summary to the user with this template:
 ```
 
 **STOP. Wait for user approval to continue.**
-
-## Code References
-
-See [Code References in AGENTS.md](/home/debian/dotfiles/.opencode/AGENTS.md).
