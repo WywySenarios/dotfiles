@@ -1,8 +1,0 @@
-# pipx.txt — packages installable via pipx
-#
-# Install: pipx install $(awk '!/^#/ && !/^$/ {print $1}' packages.d/pipx.txt)
-#
-# Source references:
-#   dotfiles/docs/FORMATTERS.md
-
-ruff                  # Python formatter and linter

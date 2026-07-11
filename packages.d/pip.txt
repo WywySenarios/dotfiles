@@ -1,8 +1,0 @@
-# pip.txt — packages installable via pip
-#
-# Install: pip install $(awk '!/^#/ && !/^$/ {print $1}' packages.d/pip.txt)
-#
-# Source references:
-#   /etc/Wywy-Website-Control/internal/implementation-plans/k8s-migration-agentic.mdx
-
-kubernetes            # Kubernetes Python client

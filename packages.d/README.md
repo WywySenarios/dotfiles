@@ -1,66 +1,91 @@
 # packages.d — dev machine packages
 
-Every package and tool that this dotfiles repo and the Wywy-Website-Control
-infrastructure depend on, organized by package manager.
+Every package, tool, and repository this dotfiles repo depends on, organized by
+package manager and purpose.
 
-Each `.txt` file maps to a single install command — run the whole file, or
-pick individual sections.
+## Structure
+
+```
+packages.d/
+├── apt/
+│   ├── core            # git, build-essential, curl, ...
+│   ├── languages       # shfmt, golang-go, rustfmt, nodejs, ...
+│   ├── utils           # vim
+│   └── deployment      # containerd, docker.io, kubectl, ...
+├── npm/
+│   ├── global          # prettier
+│   └── opencode        # bun, opencode-ai
+├── pip/
+│   └── default         # kubernetes
+├── pipx/
+│   └── default         # ruff
+├── go/
+│   └── default         # modernc.org/sqlite, github.com/coder/websocket
+├── manual/
+│   └── default         # Tools requiring manual install (no package manager)
+├── repos/
+│   ├── kubernetes/     # GPG key + apt source for pkgs.k8s.io
+│   ├── docker/         # GPG key + apt source for download.docker.com
+│   └── proxmox/        # GPG key + apt source for Proxmox VE
+├── install.sh          # Installer script
+└── README.md
+```
+
+Each file contains **only package names** — one per line. The folder path is the
+documentation: `apt/core` tells you these are core apt packages without needing
+any comments.
 
 ## Quick install
 
 ```bash
-# Helper: extract package names, stripping comments and blank lines
-pkgs() { awk '!/^#/ && !/^$/ {print $1}' "packages.d/$1"; }
+# Install specific sections
+./install.sh apt/core apt/languages
 
-# Apt — system core, languages/formatters, deployment
-sudo apt install -y $(pkgs apt.txt)
+# Install all apt packages
+./install.sh apt/*
 
-# npm global tools
-npm install -g $(pkgs npm.txt)
+# Install all npm packages
+./install.sh npm/*
 
-# pipx
-pipx install $(pkgs pipx.txt)
-
-# pip
-pip install $(pkgs pip.txt)
-
-# Go modules
-awk '!/^#/ && !/^$/ {print $1}' packages.d/go.txt | xargs -n1 go get
+# Mix and match
+./install.sh apt/core npm/opencode pipx/default
 ```
 
-Tools listed in `manual.txt` must be installed by hand (see inline commands).
+## Repos
 
-Or use the wrapper script:
+The `repos/` directory manages third-party APT repositories. Each repo has:
+
+- `key.url` — URL to fetch the GPG signing key from
+- `source` — the deb source line (written to `/etc/apt/sources.list.d/`)
+
+Placeholder variables in `source` files are expanded at install time:
+
+| Placeholder | Replaced with                  |
+| ----------- | ------------------------------ |
+| `$DISTRO`   | `$(lsb_release -cs)`           |
+| `$ARCH`     | `$(dpkg --print-architecture)` |
 
 ```bash
-./install.sh apt.txt                       # apt (default)
-./install.sh --npm npm.txt                 # npm
-./install.sh --pipx pipx.txt               # pipx
-./install.sh --pip pip.txt                 # pip
-./install.sh --go go.txt                   # go get
+# Setup all repos (GPG keys + sources + apt update)
+./install.sh --repos
+
+# Setup specific repos only
+./install.sh --repos kubernetes docker
 ```
-
-## File inventory
-
-| File         | Package manager | What's inside                                |
-| ------------ | --------------- | -------------------------------------------- |
-| `apt.txt`    | apt             | System core, language toolchains, deployment |
-| `npm.txt`    | npm             | Global tools + Astro app project deps        |
-| `pipx.txt`   | pipx            | Python CLI tools (ruff)                      |
-| `pip.txt`    | pip             | Python libraries (kubernetes)                |
-| `go.txt`     | go get          | Go modules (sqlite, websocket)               |
-| `manual.txt` | —               | Manual downloads (Go binary, nvm, air)       |
-| `install.sh` | —               | Wrapper script for all of the above          |
-
-## Sources scanned
-
-- `dotfiles/` — `.bashrc`, `.bashrc.d/`, `docs/FORMATTERS.md`, `README.md`
-- `/etc/Wywy-Website-Control/` — `install.sh`, `scripts/install/*`, `docs/`, `k8s/`
-- Service repos: Wywy-Website-Cache, Wywy-Website, Wywy-Website-Backup,
-  Wywy-Website-Master-Database, Wywy-Codes, Wywy-CI
 
 ## Adding a new package
 
-1. Add a line to the correct `*.txt` file (by package manager).
-2. Include a comment with the source reference (file:line).
-3. If a new package manager is needed, create a new `.txt` file.
+1. Add a line to the appropriate section file (e.g., `apt/core`).
+2. One package name per line. No comments needed — the directory path is the context.
+
+## Adding a new APT repository
+
+1. Create a directory under `repos/` (e.g., `repos/myrepo/`).
+2. Add `key.url` with the GPG key URL.
+3. Add `source` with the deb source line (use `$DISTRO` / `$ARCH` as needed).
+4. Run `./install.sh --repos myrepo`.
+
+## Manual tools
+
+Tools listed in `manual/default` have no package manager. They must be installed
+by hand — see the inline instructions in that file.

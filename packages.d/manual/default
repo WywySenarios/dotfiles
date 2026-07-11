@@ -1,15 +1,8 @@
-# manual.txt — tools installed via download / external script (no package manager)
-#
-# Source references:
-#   /etc/Wywy-Website-Control/scripts/install/ci.sh
-#   dotfiles/.bashrc.d/apps/nvm.sh
-#   dotfiles/README.md
-#   dotfiles/docs/FORMATTERS.md
+These tools have no package manager and must be installed by hand.
 
 # Go binary tarball (when apt version is too old or you need a specific version)
 #   wget https://go.dev/dl/go1.24.0.linux-amd64.tar.gz -O /tmp/go.tar.gz
 #   sudo tar -C /usr/local -xzf /tmp/go.tar.gz
-#   export PATH=$PATH:/usr/local/go/bin
 
 # Node Version Manager (nvm)
 #   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash

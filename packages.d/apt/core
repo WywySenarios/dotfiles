@@ -1,0 +1,6 @@
+git
+acl
+build-essential
+bash-completion
+curl
+gnupg

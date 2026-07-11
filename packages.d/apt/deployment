@@ -1,0 +1,10 @@
+containerd
+docker.io
+kubelet
+kubeadm
+kubectl
+proxmox-ve
+postfix
+open-iscsi
+xorriso
+syslinux-utils
