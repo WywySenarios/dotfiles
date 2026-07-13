@@ -8,7 +8,4 @@ apt-get install -y \
 	cargo \
 	clang-format \
 	nodejs \
-	npm \
-	python3-pip \
-	python3-venv \
-	pipx
+	npm
