@@ -1,4 +1,10 @@
-These tools have no package manager and must be installed by hand.
+#!/usr/bin/env bash
+# packages/manual/default.sh — tools without a package manager
+# These must be installed by hand. This script prints instructions.
+set -euo pipefail
+
+cat <<'EOF'
+The following tools have no package manager and must be installed manually:
 
 # Go binary tarball (when apt version is too old or you need a specific version)
 #   wget https://go.dev/dl/go1.24.0.linux-amd64.tar.gz -O /tmp/go.tar.gz
@@ -15,3 +21,4 @@ These tools have no package manager and must be installed by hand.
 
 # opencode-rbash plugin dependencies
 #   cd plugins/opencode-rbash && npm install
+EOF
