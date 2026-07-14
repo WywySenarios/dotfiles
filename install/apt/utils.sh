@@ -2,4 +2,5 @@
 set -euo pipefail
 
 apt-get install -y \
-	vim
+	vim \
+	neovim
