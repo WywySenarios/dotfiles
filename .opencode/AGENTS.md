@@ -33,15 +33,13 @@ There are some cases in which you should use indirect language:
 
 1. One-word status messages. Avoid including elipses if there is a spinner. e.g. `Loading...`, `Saving...`, `Downloading...`
 
-## Conventions
-
-### Running tests
+## Running tests
 
 Prefer to run tests using a testing script. If one is not available, kindly remind the user to create a testing script during your later report to them.
 
 If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git`), **STOP** and ask the user to run it for you or to grant the necessary permission. Do not attempt to work around the restriction.
 
-### Report output format
+## Report output format
 
 When reporting the results of any phase or edit, use these canonical table formats:
 
