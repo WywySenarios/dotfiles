@@ -36,7 +36,8 @@
     "external_directory": {
       "*": "deny",
       "/tmp/opencode/**": "allow",
-      "{env:HOME}/src/**": "allow"
+      "{env:HOME}/src/**": "allow",
+      "{env:HOME}/plans/**": "allow"
     },
     "read": {
       "**/.env": "allow",
