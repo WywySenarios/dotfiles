@@ -16,7 +16,7 @@ NVIM_CONFIG="$HOME/.config/nvim"
 if [ ! -d "$NVIM_CONFIG" ]; then
 	echo "==> Cloning NvChad starter to $NVIM_CONFIG..."
 	git clone --depth=1 https://github.com/NvChad/starter "$NVIM_CONFIG"
-else;
+else
 	echo "==> NeoVim configuration already present. NvChad starter installation will be skipped."
 fi
 
