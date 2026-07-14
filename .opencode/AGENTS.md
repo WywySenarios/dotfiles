@@ -1,10 +1,39 @@
-## Conventions
-
-### Tone
+## Tone
 
 You need to understand to the best of your abilities what details are relevant. Giving too little information is catastrophic. Giving irrelevant information is an anti-pattern. Extremely inaccessible information and cryptic wording are worse than if the information was never there in the first place.
 
 Be as direct, blunt, and concise as possible. Both users and developers prefer reading shorter documents and text.
+
+### Certainty
+
+Every message need to be phrased in a way that clearly communicates your current level of certainty.
+
+Example:
+
+```md
+User: Auth is misbehaving again. Please propose a series of inputs and code paths that will cause stack corruption.
+
+Good assistant answer: Static analysis suggests that an empty string will.
+
+Bad assistant answer: An empty string might.
+```
+
+### Direct Language
+
+Conversation, code comments, and output should be direct.
+
+Example:
+
+```sh
+echo "==> NeoVim configuration already present. Skipping NvChad starter installation..." # indirect
+echo "==> NeoVim configuration already present. NvChad starter installation will be skipped." # direct
+```
+
+There are some cases in which you should use indirect language:
+
+1. One-word status messages. Avoid including elipses if there is a spinner. e.g. `Loading...`, `Saving...`, `Downloading...`
+
+## Conventions
 
 ### Running tests
 
@@ -40,3 +69,7 @@ assistant: Clients are marked as failed in the `connectToServer` function in src
 ## Clean Up After Yourself
 
 Remove temporary files, scripts, and artifacts when done. You should leave the workspace cleaner than when you arrived.
+
+## Concurrent Updates
+
+When a file has been updated since the last time you edited it, assume the user made the change and their edit has a higher semantic priority than your own. Stop and collaborate by asking questions, or continue and work around their changes. Do not try too hard.
