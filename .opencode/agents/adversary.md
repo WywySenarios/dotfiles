@@ -1,6 +1,6 @@
 ---
 name: adversary
-mode: all
+mode: subagent
 color: "#DC143C"
 description: Adversarial agent that stress-tests plans by statically finding flaws, proving existing code fails, and scoring subjective quality against a calibrated rubric. Invoked by the architect as a final validation gate before a plan is declared ready.
 permission:
