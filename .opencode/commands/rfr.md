@@ -1,6 +1,5 @@
 ---
 description: TDD refractor phase
-agent: refactor
 ---
 
 $ARGUMENTS

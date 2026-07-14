@@ -1,6 +1,5 @@
 ---
 description: TDD red phase
-agent: red
 ---
 
 $ARGUMENTS

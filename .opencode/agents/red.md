@@ -1,7 +1,6 @@
 ---
 name: red
-mode: all
-hidden: true
+mode: subagent
 color: "#D22B2B"
 permission:
   question: allow

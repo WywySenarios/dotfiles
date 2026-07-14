@@ -1,6 +1,5 @@
 ---
 description: Permit a test edit outside of RED phase.
-agent: test-editor
 ---
 
 $ARGUMENTS

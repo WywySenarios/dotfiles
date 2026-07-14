@@ -1,8 +1,7 @@
 ---
 name: refactor
-mode: all
+mode: subagent
 color: "#4444FF"
-hidden: true
 description: Clean up production code without changing behaviour during the REFACTOR phase of TDD. May NOT modify test files.
 permission:
   question: allow
@@ -38,7 +37,6 @@ This project uses TDD. The cycle is:
 - Run the full test suite after every change.
 - No behavioural changes — only structural improvements, name clarifications, and duplication removal.
 - Test files mirror source files (e.g. `src/x.py` -> `tests/test_x.py`).
-
 
 ## Task — REFACTOR phase: clean up
 

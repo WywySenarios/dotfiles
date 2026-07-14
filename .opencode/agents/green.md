@@ -1,8 +1,7 @@
 ---
 name: green
-mode: all
+mode: subagent
 color: "#00AA00"
-hidden: true
 description: Write minimal production code to pass failing tests during the GREEN phase of TDD. May NOT modify test files.
 permission:
   question: allow
@@ -38,7 +37,6 @@ This project uses TDD. The cycle is:
 - No implementation code without a preceding test.
 - Every new feature or bug fix starts with a failing test.
 - Run the full test suite before declaring any task done.
-
 
 ## Task — GREEN phase: make it pass
 
