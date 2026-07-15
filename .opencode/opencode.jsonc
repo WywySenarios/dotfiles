@@ -36,6 +36,7 @@
       "/tmp/opencode/**": "allow",
       "{env:HOME}/src/**": "allow",
       "{env:HOME}/plans/**": "allow",
+      "{env:HOME}/dotfiles/**": "allow",
     },
     "read": {
       "**/.env": "allow",
