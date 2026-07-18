@@ -4,43 +4,43 @@
   "plugin": ["./plugins/opencode-rbash/src/index.ts"],
   "agent": {
     "build": {
-      "disable": true,
+      "disable": true
     },
     "plan": {
-      "disable": true,
+      "disable": true
     },
     "general": {
-      "disable": true,
-    },
+      "disable": true
+    }
   },
   "formatter": {
     "prettier": {
-      "command": ["npx", "prettier", "--write", "$FILE"],
+      "command": ["npx", "prettier", "--write", "$FILE"]
     },
     "shfmt": {},
     "ruff": {},
     "gofmt": {},
     "rustfmt": {},
     "clang-format": {},
-    "air": {},
+    "air": {}
   },
   "permission": {
     "edit": {
       "**/.opencode/plans/**": "deny",
       "**/.opencode/plan.md": "deny",
       "**/.opencode/Plan.md": "deny",
-      "**/.opencode/PLAN.md": "deny",
+      "**/.opencode/PLAN.md": "deny"
     },
     "external_directory": {
       "*": "deny",
       "/tmp/opencode/**": "allow",
       "{env:HOME}/src/**": "allow",
       "{env:HOME}/plans/**": "allow",
-      "{env:HOME}/dotfiles/**": "allow",
+      "{env:HOME}/dotfiles/**": "allow"
     },
     "read": {
       "**/.env": "allow",
-      "**/.env.*": "allow",
-    },
-  },
+      "**/.env.*": "allow"
+    }
+  }
 }

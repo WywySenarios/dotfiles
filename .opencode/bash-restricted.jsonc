@@ -28,7 +28,7 @@
     "id": {},
     "getent": {},
     "true": {},
-    "false": {},
+    "false": {}
   },
   // Script path patterns — matched via glob against the command's first word.
   // Executables in "allow" take precedence if there is overlap.
@@ -38,6 +38,6 @@
   "agents": [{ "name": "scribe", "mode": "primary" }],
   "settings": {
     "timeout_ms": 120000,
-    "workdir_policy": "project",
-  },
+    "workdir_policy": "project"
+  }
 }
