@@ -15,4 +15,5 @@ curl -fsSL "https://packages.microsoft.com/keys/microsoft.asc" | sudo gpg --dear
 echo "deb [arch=$ARCH signed-by=$KEYRING] https://packages.microsoft.com/repos/code stable main" |
 	sudo tee /etc/apt/sources.list.d/vscode.list >/dev/null
 
-sudo apt update
+sudo apt-get update
+sudo apt-get install -y code
