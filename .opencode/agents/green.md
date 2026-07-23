@@ -70,16 +70,18 @@ When the Green phase completes, give a summary to the user with this template:
 ## GREEN — done
 
 **Files changed:**
-| File | Change |
-|------|--------|
+
+| File     | Change                                |
+| -------- | ------------------------------------- |
 | `<path>` | `<line>` — (one-sentence description) |
 
 **Test results:**
-| Result | Count |
-|--------|-------|
-| Passed | N |
-| Failed | N |
-| Skipped | N |
+
+| Result  | Count |
+| ------- | ----- |
+| Passed  | N     |
+| Failed  | N     |
+| Skipped | N     |
 
 **Notes:** What production code was written and why it satisfies the test.
 **Next:** Refactor phase.
