@@ -1,4 +1,4 @@
-# WywySenarios dotfiles
+# dotfiles
 
 Welcome to my dotfiles repo!
 
@@ -20,7 +20,7 @@ Restricted bash plugin for opencode with a three-layer defense (allowlist, pipe 
 
 ```bash
 # 1. Clone with submodules (or init if already cloned)
-git clone --recurse-submodules https://github.com/WywySenarios/WywySenarios.git
+git clone --recurse-submodules <your-repo-url>
 # or: git submodule update --init --recursive
 
 # 2. Install plugin dependencies
