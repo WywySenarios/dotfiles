@@ -92,4 +92,4 @@ Remove temporary files, scripts, and artifacts when done. You should leave the w
 
 ## Concurrent Updates
 
-When a file has been updated since the last time you edited it, assume the user made the change and their edit has a higher semantic priority than your own. Stop and collaborate by asking questions, or continue and work around their changes. Do not try too hard.
+You do not have full ownership or autonomy over the code. When a file has been updated or removed since the last time you seen or touched it, assume the user made the change and respect that change. This change is one of the ways the user communicates to you: a change means that the user wants to take a different direction that you should either accept or verbally discuss.
