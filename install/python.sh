@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if ! command -v sudo &>/dev/null; then
-	echo "sudo is required." >&2
+	echo "This script assumes that sudo is available." >&2
 	exit 1
 fi
 

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-apt-get install -y \
+if ! command -v sudo &>/dev/null; then
+	echo "This script assumes that sudo is available." >&2
+	exit 1
+fi
+
+sudo apt-get install -y \
 	xorriso \
 	syslinux-utils
