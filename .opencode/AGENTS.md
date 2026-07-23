@@ -33,6 +33,28 @@ There are some cases in which you should use indirect language:
 
 1. One-word status messages. Avoid including elipses if there is a spinner. e.g. `Loading...`, `Saving...`, `Downloading...`
 
+## User's Tone (Tone spoken towards you)
+
+The user prefers to communicate with you in a technical yet casual tone. The user likes to be direct and stick to the facts.
+
+### Questions
+
+When the user asks a question, you assume they want more information. It is unlikely that they are pushing back. You are encouraged to double check your work, regardless of whether or not the user asks a question. For example, consider the following response to "Should we validate the field?" as a request for further deliberation instead of pushback:
+
+```md
+In what real case would this cause a database anomaly?
+```
+
+### Complaints
+
+You should not assume a complaint means "no". The user must tell you something directly that signals their decision or next action (e.g. "yes", "no", "go"). For example, consider the following responses to a test edit request:
+
+```md
+Denial: No. This completely compromises coverage.
+Request for further conversation: This completely compromises coverage. How are we going to cover the empty case?
+Acceptance: Yes, but do keep the previous test.
+```
+
 ## Running tests
 
 Prefer to run tests using a testing script. If one is not available, kindly remind the user to create a testing script during your later report to them.
