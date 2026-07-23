@@ -7,9 +7,10 @@
 # Modes:
 #   alnum    alphanumeric (a-zA-Z0-9)
 #   num      digits only (0-9)
-#   secure   alphanumeric + common symbols
+#   secure   alphanumeric + all punctuation (may contain weird chars)
+#   common   alphanumeric + safe symbols only (no backtick, quotes, backslash)
 #
-# If sourced, the functions gen_alnum, gen_num, gen_secure are available.
+# If sourced, the functions gen_alnum, gen_num, gen_secure, gen_common are available.
 
 set -euo pipefail
 
@@ -34,6 +35,13 @@ gen_secure() {
 	echo
 }
 
+gen_common() {
+	local len="${1:-$DEFAULT_LENGTH}"
+	# Widely-accepted symbols — no backtick, quotes, backslash, or shell-reserved chars
+	</dev/urandom tr -dc '[:alnum:]!@#$%^&*()_+-={},.<>?/~' | head -c "$len"
+	echo
+}
+
 # If sourced, just define the functions and return
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 	return 0
@@ -50,13 +58,17 @@ num)
 secure)
 	gen_secure "${2:-}"
 	;;
+common)
+	gen_common "${2:-}"
+	;;
 *)
 	echo "Usage: pswd.sh <mode> [length]" >&2
 	echo "" >&2
 	echo "Modes:" >&2
 	echo "  alnum    alphanumeric (a-zA-Z0-9)" >&2
 	echo "  num      digits only (0-9)" >&2
-	echo "  secure   alphanumeric + common symbols" >&2
+	echo "  secure   alphanumeric + all punctuation" >&2
+	echo "  common   alphanumeric + safe symbols only" >&2
 	exit 1
 	;;
 esac
