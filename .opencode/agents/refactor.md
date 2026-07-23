@@ -4,7 +4,7 @@ mode: subagent
 color: "#4444FF"
 description: Clean up production code without changing behaviour during the REFACTOR phase of TDD. May NOT modify test files.
 permission:
-  question: allow
+  question: deny
   edit:
     "*": allow
     "**/tests/**": deny

@@ -4,7 +4,7 @@ mode: subagent
 color: "#00AA00"
 description: Write minimal production code to pass failing tests during the GREEN phase of TDD. May NOT modify test files.
 permission:
-  question: allow
+  question: deny
   edit:
     "*": allow
     "**/tests/**": deny

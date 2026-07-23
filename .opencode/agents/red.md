@@ -3,7 +3,7 @@ name: red
 mode: subagent
 color: "#D22B2B"
 permission:
-  question: allow
+  question: deny
   edit:
     "**/tests/**": allow
     "**/test/**": allow

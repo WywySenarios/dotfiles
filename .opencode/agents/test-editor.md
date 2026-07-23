@@ -5,7 +5,7 @@ color: "#FF69B4"
 hidden: true
 description: Respond to test edit requests during TDD cycles. Edits existing test files only. Invoked by Cycle orchestrator.
 permission:
-  question: allow
+  question: deny
   edit:
     "**/tests/**": allow
     "**/test/**": allow
