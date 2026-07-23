@@ -53,7 +53,7 @@ If you determine a test edit is truly required, **STOP**. Load the `request-test
 ### Run the test — confirm it passes
 
 - The new test must pass. If it does not, fix the production code until it does.
-- Run the **full test suite** for the service, not just the new test. You must not break anything.
+- Run the **full test suite**, not just the new test. You must not break anything.
 - If other tests break, undo your change and find a narrower fix.
 
 ### Stop and report

@@ -21,9 +21,11 @@ Every request to edit a test MUST use this template. Paste it into your response
 ## Test edit request
 
 ### Justification
+
 `<one-paragraph explanation of why this edit is necessary>`
 
 ### Coverage
+
 `<one-paragraph explaination of changes to test coverage>`
 
 ### Behaviour change?
@@ -38,9 +40,6 @@ Every request to edit a test MUST use this template. Paste it into your response
 
 ## After the edit
 
-1. Run the full test suite for the service:
-   ```bash
-   /etc/Wywy-Website-Control/run.sh <service> test
-   ```
+1. Run the full test suite.
 2. Confirm the entire suite stays green (or, if in a TDD RED stage, confirm the intended failure still occurs).
 3. Report the result back to the original context (TDD stage, debug session, etc.).

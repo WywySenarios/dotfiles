@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Commit changes in a Wywy service repository. Use when the user asks to commit, save work, or make a commit.
+description: Commit changes in the project repository. Use when the user asks to commit, save work, or make a commit.
 ---
 
 # Commit changes
@@ -22,7 +22,7 @@ git status --porcelain | grep -qE '^\?\?.*(dist/|build/|\.next/|out/|target/|cov
   - Remove / clean the artifacts, **or**
   - Remove the offending files from the index if already staged, **or**
   - Override the check and proceed anyway.
-  Do **not** continue until the user gives explicit guidance.
+    Do **not** continue until the user gives explicit guidance.
 
 - **If this exits 1** (no match): proceed with the normal commit workflow below.
 

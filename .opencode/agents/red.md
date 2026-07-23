@@ -15,11 +15,6 @@ permission:
     "/tmp/opencode/**": "allow"
   bash:
     "*": allow
-  #   "/etc/Wywy-Website-Control/run.sh * test": allow
-  #   "grep *": allow
-  #   "ls *": allow
-  #   "find *": allow
-  #   "cat *": allow
   doom_loop: ask
 ---
 
@@ -59,11 +54,11 @@ The Cycle agent may mark a cycle as **ephemeral** and pass `ephemeral: true` in 
 
 1. Identify the **seam** — where in the call chain can the test exercise the real change?
 2. Find the **existing test file** or the right place to add one. Mirror the production module structure. If the cycle is ephemeral, the mirror is relative to the ephemeral root (see above).
-3. Decide the **test scope**: unit (fastest), integration (service boundary), or e2e (external contract).
+3. Decide the **test scope**: unit (fastest), integration (boundary), or e2e (external contract).
 
 ### Write the test
 
-- Test names must be unique across a service
+- Test names must be unique across the project
 - Name the test to describe the expected behaviour: `test_<what>_<when>_<then>`
 - Use existing test fixtures, factories, and helpers. Do not invent new machinery yet.
 - The test must exercise the **exact code path** the production code will use.
@@ -106,7 +101,7 @@ silent no-op.
 
 - The failure must match the **missing feature or bug**. A wrong failure means a wrong test — fix the test, not the production code.
 - If the test passes without any new code, the feature already exists or the test is not testing the right thing. Investigate before proceeding.
-- **For ephemeral tests:** the standard test command (`/etc/Wywy-Website-Control/run.sh <service> test`) may not automatically discover tests under `/tmp/opencode/<repo-name>/ephemeral-tests/`. Ensure discovery by one of:
+- **For ephemeral tests:** the standard test command may not automatically discover tests under `/tmp/opencode/<repo-name>/ephemeral-tests/`. Ensure discovery by one of:
   - Running the test runner with the ephemeral path as an argument (e.g., `pytest /tmp/opencode/<repo>/ephemeral-tests/`)
   - Creating a temporary symlink from the project's test directory to the ephemeral test file
   - Adding the ephemeral path to the test runner's configuration temporarily
