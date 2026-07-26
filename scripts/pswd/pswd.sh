@@ -48,6 +48,7 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
 fi
 
 # CLI mode
+SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 case "${1:-help}" in
 alnum)
 	gen_alnum "${2:-}"
@@ -61,6 +62,27 @@ secure)
 common)
 	gen_common "${2:-}"
 	;;
+--bcrypt)
+	# Usage: --bcrypt [mode] [length]
+	#   mode: alnum|num|secure|common (default: common)
+	#   length: password length (default: 24)
+	if [[ "${2:-}" =~ ^(alnum|num|secure|common)$ ]]; then
+		pwd="$(gen_"${2}" "${3:-$DEFAULT_LENGTH}")"
+	else
+		pwd="$(gen_common "${2:-$DEFAULT_LENGTH}")"
+	fi
+	echo "# Password: $pwd" >&2
+	echo "$pwd" | "$SCRIPT_DIR/hash_bcrypt.py"
+	;;
+--argon2id)
+	if [[ "${2:-}" =~ ^(alnum|num|secure|common)$ ]]; then
+		pwd="$(gen_"${2}" "${3:-$DEFAULT_LENGTH}")"
+	else
+		pwd="$(gen_common "${2:-$DEFAULT_LENGTH}")"
+	fi
+	echo "# Password: $pwd" >&2
+	echo "$pwd" | "$SCRIPT_DIR/hash_argon2id.py"
+	;;
 *)
 	echo "Usage: pswd.sh <mode> [length]" >&2
 	echo "" >&2
@@ -69,6 +91,8 @@ common)
 	echo "  num      digits only (0-9)" >&2
 	echo "  secure   alphanumeric + all punctuation" >&2
 	echo "  common   alphanumeric + safe symbols only" >&2
+	echo "  --bcrypt [mode] [length]   generate password + bcrypt hash" >&2
+	echo "  --argon2id [mode] [length] generate password + argon2id hash" >&2
 	exit 1
 	;;
 esac
