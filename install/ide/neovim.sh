@@ -3,6 +3,7 @@
 set -euo pipefail
 
 GIT_USER="WywySenarios"
+REPO="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 
 for arg in "$@"; do
 	case "$arg" in
@@ -27,7 +28,11 @@ ln -sf /opt/nvim-linux-x86_64/bin/nvim "$HOME/.local/bin/nvim"
 
 echo "==> nvim symlinked to $HOME/.local/bin/nvim"
 
-# 2. Clone NvChad starter as ~/.config/nvim/
+# 3. Symlink constants/.ignore → ~/.ignore
+ln -sf "$REPO/constants/.ignore" "$HOME/.ignore"
+echo "==> .ignore symlinked to $HOME/.ignore"
+
+# 4. Clone NvChad starter as ~/.config/nvim/
 NVIM_CONFIG="$HOME/.config/nvim"
 
 if [ ! -d "$NVIM_CONFIG" ]; then

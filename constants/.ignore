@@ -1,0 +1,29 @@
+.git/
+.git
+
+node_modules/
+
+.venv/
+.pytest_cache/
+.ruff_cache/
+**pycache**/
+
+.vscode/globalStorage/
+.vscode/History/
+.vscode/workspaceStorage/
+.vscode/sync/
+.vscode/Backups/
+.vscode/profiles/
+.vscode/extensions/
+.vscode/logs/
+.vscode/Cache/
+.vscode/Code Cache/
+.vscode/GPUCache/
+.vscode/Local Storage/
+.vscode/Session Storage/
+.vscode/\*.lock
+.vscode/Cookies
+.vscode/Local State
+.vscode/machineid
+.vscode/Preferences
+.vscode/languagepacks.json
