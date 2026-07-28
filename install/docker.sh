@@ -73,7 +73,21 @@ sudo systemctl enable docker
 sudo systemctl start docker
 
 # ---------------------------------------------------------------------------
-# 7. Verify installation
+# 7. Add user to the docker group
+# ---------------------------------------------------------------------------
+echo "==> Creating docker group and adding user..."
+sudo groupadd -f docker
+if [ -n "${SUDO_USER:-}" ]; then
+	sudo usermod -aG docker "$SUDO_USER"
+	echo "  User '$SUDO_USER' added to the docker group."
+	echo "  Log out and back in for the change to take effect."
+else
+	echo "  Could not determine the original user (SUDO_USER is unset)." >&2
+	echo "  You may need to run: sudo usermod -aG docker \$USER" >&2
+fi
+
+# ---------------------------------------------------------------------------
+# 8. Verify installation
 # ---------------------------------------------------------------------------
 echo "==> Verifying installation..."
 sudo docker run --rm hello-world 2>/dev/null
@@ -81,7 +95,3 @@ sudo docker run --rm hello-world 2>/dev/null
 echo ""
 echo "  Docker Engine $(docker --version 2>/dev/null) installed"
 echo "  Docker Compose $(docker compose version 2>/dev/null) installed"
-echo ""
-echo "  To run Docker as a non-root user, add your user to the docker group:"
-echo "    sudo usermod -aG docker \$USER"
-echo "  Then log out and back in."
