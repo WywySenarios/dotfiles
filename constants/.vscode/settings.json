@@ -1,0 +1,15 @@
+{
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.colorTheme": "Dark Modern",
+  "python.analysis.typeCheckingMode": "strict",
+  "editor.renderWhitespace": "all",
+  "terminal.integrated.initialHint": false,
+  "chat.disableAIFeatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "[shellscript]": {
+    "editor.defaultFormatter": "mkhl.shfmt"
+  }
+}

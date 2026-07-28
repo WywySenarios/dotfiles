@@ -1,0 +1,54 @@
+# VS Code artifacts — machine-local state, caches, runtime data
+
+# Global storage — runtime DBs, telemetry IDs, window state
+globalStorage/
+History/
+workspaceStorage/
+sync/
+Backups/
+
+# Profile runtime artifacts
+profiles/
+
+# Extension binaries (not portable, reinstall via extensions.txt)
+extensions/
+
+# Logs
+logs/
+
+# Chromium/Electron caches
+Cache/
+CachedConfigurations/
+CachedData/
+CachedExtensionVSIXs/
+CachedProfilesData/
+Code Cache/
+GPUCache/
+DawnGraphiteCache/
+DawnWebGPUCache/
+Local Storage/
+Session Storage/
+Service Worker/
+Shared Storage/
+SharedDictionary/
+blob_storage/
+WebStorage/
+Partitions/
+Dictionaries/
+Crashpad/
+
+# Runtime files
+*.lock
+Cookies
+Cookies-journal
+DIPS
+DIPS-wal
+Local State
+machineid
+Network Persistent State
+Preferences
+TransportSecurity
+Trust Tokens
+Trust Tokens-journal
+languagepacks.json
+.org.chromium.Chromium.*
