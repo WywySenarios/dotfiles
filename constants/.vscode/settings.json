@@ -1,4 +1,28 @@
 {
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules/*": true,
+    "**/.pytest_cache/*": true,
+    "**/__pycache__/*": true,
+    "**/.ruff_cache/*": true,
+    "**/.venv/*": true,
+    "**/venv/*": true,
+    "**/dist/*": true,
+    "**/build/*": true,
+    "**/target/*": true
+  },
+  "files.watcherExclude": {
+    "**/.git": true,
+    "**/node_modules/*": true,
+    "**/.pytest_cache/*": true,
+    "**/__pycache__/*": true,
+    "**/.ruff_cache/*": true,
+    "**/.venv/*": true,
+    "**/venv/*": true,
+    "**/dist/*": true,
+    "**/build/*": true,
+    "**/target/*": true
+  },
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.colorTheme": "Dark Modern",
   "python.analysis.typeCheckingMode": "strict",
