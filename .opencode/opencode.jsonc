@@ -41,6 +41,10 @@
     "read": {
       "**/.env": "allow",
       "**/.env.*": "allow"
+    },
+    "bash": {
+      "sudo": "deny",
+      "sops": "deny"
     }
   }
 }
