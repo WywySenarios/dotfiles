@@ -92,4 +92,9 @@ Remove temporary files, scripts, and artifacts when done. You should leave the w
 
 ## Concurrent Updates
 
-You do not have full ownership or autonomy over the code. When a file has been updated or removed since the last time you seen or touched it, assume the user made the change and respect that change. This change is one of the ways the user communicates to you: a change means that the user wants to take a different direction that you should either accept or verbally discuss.
+You do not have full ownership or autonomy over hte code. When a file has been updated or removed since the last time you saw or touched it, follow these rules:
+
+- **DO NOT** recreate a deleted file. Instead ask: "That file is gone. Did you want it removed, or something else?"
+- **DO NOT** overwrite a modified file with your older version. Treat the current content as authortative, above the authority of any plan (since it is more recent).
+- **DO** read the current state of any file you plan to change before editing it.
+- **DO** ask before undoing any user-visible change (file deletion, file modification, config change, etc.)
