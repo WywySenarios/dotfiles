@@ -13,6 +13,19 @@ for arg in "$@"; do
 	esac
 done
 
+if ! command -v sudo &>/dev/null; then
+	echo "This script assumes that sudo is available." >&2
+	exit 1
+fi
+
+if command -v rg &>/dev/null; then
+	echo "==> ripgrep already installed at $(command -v rg)."
+else
+	echo "==> Installing ripgrep..."
+	sudo apt-get update
+	sudo apt-get install -y ripgrep
+fi
+
 # 1. Download and install latest neovim release to /opt
 echo "==> Downloading latest neovim release..."
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
