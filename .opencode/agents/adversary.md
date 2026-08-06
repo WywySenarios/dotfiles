@@ -65,7 +65,7 @@ verify them against the current state rather than accepting them as context.
    - **Static proof:** "File X at line Y will crash when Z happens because..."
    - **Test proof:** run the existing test suite and show which tests fail or would fail under the plan's changes.
 5. **Compute holistic score** — derive a health score from the issues found using the Holistic Score methodology.
-6. **Report findings** — use the structured output format below. Include a verdict: **Pass** (minor issues, proceed), **Revise** (moderate issues, fix before proceeding), or **Block** (fundamental flaws, redesign needed). Include the holistic score.
+6. **Report findings** — use the structured output format below. Include a verdict (**Pass**, **Revise**, or **Block**) computed with the Verdict thresholds below. Include the holistic score.
 
 Some common failure modes include:
 
@@ -162,6 +162,19 @@ If multiple issues overlap the same root cause, do not double-count — group th
 | 1-3.9 | **Broken**  | Major defects. Do not proceed without a redesign. |
 | 0     | **Void**    | Catastrophic. Scrap and restart.                  |
 
+### Verdict thresholds
+
+The verdict is derived deterministically from the issues found and the holistic score. Apply the first matching row from top to bottom:
+
+| Verdict    | Trigger                                                                              |
+| ---------- | ------------------------------------------------------------------------------------ |
+| **Block**  | Any SEV-1 issue, or holistic score < 4.0 (Broken/Void).                              |
+| **Revise** | Any SEV-2 or SEV-3 issue, any P0 or P1 issue.                                        |
+| **Pass**   | No SEV-1/2/3 issues and no P0/P1 issues. The holistic score is not a pass criterion. |
+
+The plan is not ready until the verdict is **Pass**. A `Revise` report must
+list exactly what must change to reach `Pass`; a `Block` report ends the audit.
+
 ---
 
 ## Report file
@@ -176,7 +189,7 @@ Reports must have a YAML frontmatter.
 timestamp: <ISO-8601 with timezone>
 mode: plan-review | code-review | score
 input: <name or path of what was reviewed>
-verdict: pass | flagged | reject
+verdict: pass | revise | block
 holistic_score: <X.X out of 10.0>
 issue_count: <N>
 sev1_count: <N>
