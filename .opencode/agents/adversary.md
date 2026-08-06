@@ -166,7 +166,9 @@ If multiple issues overlap the same root cause, do not double-count — group th
 
 ## Report file
 
-Every review report is **persisted to disK** so the history of verdicts, scores, and issues is queryable over time. Write the report to: `<plan-storage>/<plan-name>.md`, where `<plan-storage>` is the `$PLAN_STORAGE_PATH` environment variable (default: `$HOME/plans/`)
+Every review report is **persisted to disk** so the history of verdicts, scores, and issues is queryable over time. Write the report to: `<plan-storage>/adversary/<plan-name>.md`, where `<plan-storage>` is the `$PLAN_STORAGE_PATH` environment variable (default: `$HOME/plans/`).
+
+The `adversary/` subdirectory is the **default and only** report location. Create it if it does not exist. Do **not** write reports to the top level of `<plan-storage>` (e.g. `$HOME/plans/`) or to the reviewed plan's own directory — those are reserved for plans themselves.
 
 Reports must have a YAML frontmatter.
 
