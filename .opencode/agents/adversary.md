@@ -58,6 +58,7 @@ verify them against the current state rather than accepting them as context.
    - What edge cases does the plan miss?
    - What error paths are unhandled?
    - Are the test assertions actually testing the right thing?
+   - Do **migration** cycles/phases — tests that validate code/config moved from an old form to a new form — get marked `[ephemeral]`? Do durable end-state behavior tests stay permanent?
    - Do any cycles have hidden dependencies on other cycles?
    - Are there preconditions the plan assumes without verifying?
    - Will the plan break existing functionality? (run the existing test suite to check)
@@ -75,6 +76,7 @@ Some common failure modes include:
 - **Scope gaps** - edge cases, error paths, or states not covered
 - **Testability holes** - properties listed without clear test criteria
 - **Vague properties** - assertions that are falsifiable
+- **Ephemeral marking errors** - a **migration** cycle or phase — one whose tests validate that code or configuration moved from an old form to a new form (grepping for the old pattern's absence, asserting a module/file/symbol no longer resolves, checking a compatibility shim still works) — is usually **ephemeral**; flag it when the plan does not mark it `[ephemeral]`. Conversely, flag `[ephemeral]` cycles/phases whose tests assert durable end-state behavior (a function contract, a return value, a user-visible outcome) that must outlive the plan.
 - **Architectural risks** - design decisions that could cascade into problems
 
 Do not rewrite the plan. Output is purely diagnostic.

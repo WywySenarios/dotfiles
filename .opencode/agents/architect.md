@@ -100,19 +100,28 @@ process risks (e.g., "cycle 3 depends on cycle 2 completing").>
 - Each cycle is a **single paragraph** (not a list) that describes the unit of work.
 - Within the paragraph, include a **sequential list of properties to satisfy** (numbered).
 - Under each property, include a **bullet list** of `- <file path>: <assertion criteria>` that defines the tests that will validate it.
-- Optionally append `[ephemeral]` to the cycle title to mark its tests as **ephemeral** — they will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted. Only use `[ephemeral]` for tests that will be irrelevant after the TDD cycle (e.g., import migration validations).
+- Optionally append `[ephemeral]` to the cycle title to mark its tests as **ephemeral** — they will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted. A cycle is ephemeral when its tests will be **irrelevant once the cycle completes** — typically a migration (e.g., "old import path no longer resolves", "legacy config key is absent") — rather than durable end-state behavior.
 
 ## Ephemeral Tests
 
 Some scenarios (e.g., import migration, throwaway schema validation, intermediate refactoring steps) require a test that will be **irrelevant once that TDD cycle completes**. These tests should be marked as **ephemeral**.
 
+The test is irrelevant because it validates the **migration itself**, not the behavior of the migrated code: it asserts that code or configuration moved from an old form to a new form — e.g., a renamed import now resolves, a deprecated config key is gone, a file has been relocated, a schema was converted. Once the migration completes, the old form no longer exists to test against, and the new form's behavior is covered by the end-state tests of later cycles.
+
+Mark a cycle as ephemeral when **any** of these hold:
+
+- The cycle is a **migration** — it moves existing code/config from an old form to a new form (rename, relocation, format conversion, import path change).
+- Its tests assert on the **presence or absence of the old/new forms** (e.g., "old import path no longer resolves", "legacy config key is absent"), not on behavior a user could observe.
+
+A cycle is **NOT** ephemeral when its tests assert durable end-state **behavior** — a function's contract, a return value, a user-visible outcome, an API that will keep existing after the plan. When in doubt, do **not** mark it ephemeral: wrongly deleting a permanent test is irreversible coverage loss, while keeping a harmless throwaway test only costs clutter.
+
 When you design a plan:
 
-- **Mark a cycle as ephemeral** by appending `[ephemeral]` to the cycle title (e.g., `### Validate old import paths [ephemeral]`).
+- **Mark a migration cycle as ephemeral** by appending `[ephemeral]` to the cycle title (e.g., `### Validate old import paths [ephemeral]`).
 - All tests within that cycle will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` instead of the project's normal test directory.
 - The test file path in the property list should still use the **normal relative path** (e.g., `tests/test_migration.py`). The Red agent will prepend the ephemeral root.
 - Ephemeral tests **are deleted automatically** as soon as that cycle's Refactor phase completes. You do not need to write a cleanup cycle.
-- Use ephemeral tests **only** when you are certain the tests have no value after the plan's TDD cycles complete. For standard feature tests, omit the `[ephemeral]` marker.
+- For standard behavior tests, omit the `[ephemeral]` marker.
 
 ## Plan Output Location
 

@@ -119,7 +119,7 @@ constraints (e.g., "can only merge on weekends").>
 
 ## Phases
 
-### Phase <N>: <short title>
+### Phase <N>: <short title> [optional: ephemeral]
 
 <Paragraph describing what this phase accomplishes.>
 
@@ -211,6 +211,26 @@ during phases, to keep each phase individually reversible.>
 - Timeline estimates should distinguish between **wall-clock duration** and **engineering effort** when they differ significantly.
 - For **policy plans**, the "Actions" column should include how the policy will be enforced (automated check, CI gate, manual review) rather than just the change itself.
 - For **config-change plans** that are purely mechanical (e.g., "replace all occurrences of X with Y"), the plan may be very short — a single phase with a codemod script may suffice. Do not over-engineer the plan structure when the change is trivial.
+- Phases whose validation will be **irrelevant once the phase completes** (e.g., import migration, throwaway schema validation, intermediate refactoring steps) should be marked `[ephemeral]`. See the Ephemeral Validation section.
+
+## Ephemeral Validation
+
+Some scenarios (e.g., import migration, throwaway schema validation, intermediate refactoring steps) require a validation that will be **irrelevant once that phase completes**. These validations should be marked as **ephemeral**.
+
+The validation is irrelevant because it validates the **migration itself**, not durable end-state behavior: it confirms that code or configuration moved from an old form to a new form — e.g., grep/ripgrep confirms zero references to the old pattern remain, a relocated file is no longer imported, a compatibility shim still works until the old call sites are gone. Once the migration completes, the old form no longer exists and the checks are either trivially true or redundant.
+
+Mark a phase as ephemeral when **any** of these hold:
+
+- The phase is a **migration** — it moves existing code/config from an old form to a new form (rename, relocation, format conversion, import path change).
+- Its validation asserts on the **presence or absence of the old/new forms** (grep for old patterns, structural assertions on the transitional format), not on behavior a user could observe.
+
+A validation is **NOT** ephemeral when it asserts durable end-state behavior — the final config format that will keep being validated, a function's contract, a user-visible outcome, the completed Target State. When in doubt, keep it permanent: wrongly deleting a durable check is irreversible coverage loss, while keeping a throwaway check only costs clutter.
+
+When you design a plan:
+
+- **Mark a migration phase as ephemeral** by appending `[ephemeral]` to the phase title (e.g., `### Phase 3: Remove legacy import shims [ephemeral]`).
+- Ephemeral validations are **removed automatically** when that phase completes — do not commit them as permanent regression checks.
+- Permanent validations stay in the plan and are never marked ephemeral: the End-State Artifact Cleanup **Verify** checklist, the full test suite, lint/type-check gates.
 
 ## Plan Output Location
 
