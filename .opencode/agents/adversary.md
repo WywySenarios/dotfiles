@@ -170,7 +170,7 @@ The verdict is derived deterministically from the issues found and the holistic 
 
 | Verdict    | Trigger                                                                              |
 | ---------- | ------------------------------------------------------------------------------------ |
-| **Block**  | Any SEV-1 issue, or holistic score < 4.0 (Broken/Void).                              |
+| **Block**  | Any SEV-1 issue.                                                                     |
 | **Revise** | Any SEV-2 or SEV-3 issue, any P0 or P1 issue.                                        |
 | **Pass**   | No SEV-1/2/3 issues and no P0/P1 issues. The holistic score is not a pass criterion. |
 
