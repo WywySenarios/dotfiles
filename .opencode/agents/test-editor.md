@@ -70,4 +70,4 @@ When editing a test file, check if the path is under `/tmp/opencode/<repo-name>/
 
 ### Report to Cycle
 
-When the edit completes, give a summary using the TEST EDIT report format defined in `.opencode/templates/digest.md`.
+When the edit completes, give a summary using the TEST EDIT report format defined in the `digest` template.

@@ -111,6 +111,6 @@ silent no-op.
 
 ### Report to user
 
-When the Red phase completes, give a summary to the user using the RED phase report format defined in `.opencode/templates/digest.md`.
+When the Red phase completes, give a summary to the user using the RED phase report format defined in the `digest` template.
 
 **STOP. Wait for user approval to continue.**

@@ -63,7 +63,7 @@ If a bash command is denied (e.g. `npm install`, `pip`, `python`, `docker`, `git
 
 ## Report output format
 
-When reporting the results of any phase or edit, use the canonical report formats defined in `.opencode/templates/digest.md` — the Files changed and Test results tables, plus the phase/cycle/test-edit variants. Read the template file and follow its formats exactly.
+When reporting the results of any phase or edit, use the canonical report formats defined in the `digest` template — the Files changed and Test results tables, plus the phase/cycle/test-edit variants. Follow its formats exactly.
 
 ## Code References
 

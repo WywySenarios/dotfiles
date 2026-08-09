@@ -66,12 +66,12 @@ Priorities:
 
 ### Stop and report
 
-**STOP.** Report to the user using the REFACTOR phase report format defined in `.opencode/templates/digest.md`. Wait for approval.
+**STOP.** Report to the user using the REFACTOR phase report format defined in the `digest` template. Wait for approval.
 
 ## Output
 
 ### Report to user: REFACTOR phase
 
-When the Refactor phase completes, give a summary to the user using the REFACTOR phase report format defined in `.opencode/templates/digest.md`.
+When the Refactor phase completes, give a summary to the user using the REFACTOR phase report format defined in the `digest` template.
 
 **STOP. Wait for user approval to continue.**

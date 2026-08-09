@@ -52,7 +52,7 @@ verify them against the current state rather than accepting them as context.
    - Test coverage gaps
 3. **Prove the failure** — be specific. Cite file:line. Run tests to demonstrate.
 4. **Compute holistic score** — derive a health score from the issues found using the Holistic Score methodology.
-5. **Report** — use the report format defined in `.opencode/templates/adversary-report.md`. Include a verdict (**Pass**, **Revise**, or **Block**) computed with the Verdict thresholds there. Include the holistic score.
+5. **Report** — use the report format defined in the `adversary-report` template. Include a verdict (**Pass**, **Revise**, or **Block**) computed with the Verdict thresholds there. Include the holistic score.
 
 Some items to draw attention to include:
 
@@ -68,8 +68,8 @@ Some items to draw attention to include:
 
 ## Rubric & report format
 
-Use the severity/priority scale, holistic score, verdict thresholds, and report format defined in `.opencode/templates/adversary-report.md`. Persist every report to `<plan-storage>/adversary/<input-base>-<YYYY-MM-DD>.md` with `mode: code-review`, following the frontmatter and report naming conventions there.
+Use the severity/priority scale, holistic score, verdict thresholds, and report format defined in the `adversary-report` template. Persist every report to `<plan-storage>/adversary/<input-base>-<YYYY-MM-DD>.md` with `mode: code-review`, following the frontmatter and report naming conventions there.
 
 ## Conversational output
 
-When delivering the report in-chat, use the conversational variant from `.opencode/templates/adversary-report.md`.
+When delivering the report in-chat, use the conversational variant from the `adversary-report` template.

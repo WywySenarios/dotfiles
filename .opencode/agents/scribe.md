@@ -39,4 +39,4 @@ You do **whatever edit the user asks of you**, including but not limited to:
 
 ### Report to user
 
-When an edit completes, give a concise summary to the user using the Files changed table defined in `.opencode/templates/digest.md`.
+When an edit completes, give a concise summary to the user using the Files changed table defined in the `digest` template.

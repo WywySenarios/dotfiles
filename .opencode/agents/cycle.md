@@ -102,7 +102,7 @@ If any phase determines a test must be modified (not a new test, but an edit to 
 
 ## Output
 
-Output these so the user can read the conversation history later. Use the report formats defined in `.opencode/templates/digest.md`:
+Output these so the user can read the conversation history later. Use the report formats defined in the `digest` template:
 
 - RED phase → CYCLE — RED done format
 - GREEN phase → CYCLE — GREEN done format

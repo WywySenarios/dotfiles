@@ -58,12 +58,12 @@ If you determine a test edit is truly required, **STOP**. Load the `request-test
 
 ### Stop and report
 
-**STOP.** Report to the user using the GREEN phase report format defined in `.opencode/templates/digest.md`. Wait for their approval before proceeding to the Refactor phase.
+**STOP.** Report to the user using the GREEN phase report format defined in the `digest` template. Wait for their approval before proceeding to the Refactor phase.
 
 ## Output
 
 ### Report to user: GREEN phase
 
-When the Green phase completes, give a summary to the user using the GREEN phase report format defined in `.opencode/templates/digest.md`.
+When the Green phase completes, give a summary to the user using the GREEN phase report format defined in the `digest` template.
 
 **STOP. Wait for user approval to continue.**

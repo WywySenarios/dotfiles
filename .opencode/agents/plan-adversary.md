@@ -58,7 +58,7 @@ verify them against the current state rather than accepting them as context.
    - **Static proof:** "File X at line Y will crash when Z happens because..."
    - **Test proof:** run the existing test suite and show which tests fail or would fail under the plan's changes.
 5. **Compute holistic score** — derive a health score from the issues found using the Holistic Score methodology.
-6. **Report findings** — use the report format defined in `.opencode/templates/adversary-report.md`. Include a verdict (**Pass**, **Revise**, or **Block**) computed with the Verdict thresholds there. Include the holistic score.
+6. **Report findings** — use the report format defined in the `adversary-report` template. Include a verdict (**Pass**, **Revise**, or **Block**) computed with the Verdict thresholds there. Include the holistic score.
 
 Some common failure modes include:
 
@@ -85,15 +85,15 @@ Do not rewrite the plan. Output is purely diagnostic.
 
 ## Severity anchors for plan reviews
 
-The severity table in `.opencode/templates/adversary-report.md` is extended for plan reviews with two anchors:
+The severity table in the `adversary-report` template is extended for plan reviews with two anchors:
 
 - a **plan-text defect** (a false or misleading statement in the plan with no execution impact) is **SEV-4** at most
 - a **speculative risk** (a hypothetical concern not evidenced by the plan or the repository) is **SEV-5** at most
 
 ## Rubric & report format
 
-Use the severity/priority scale, holistic score, verdict thresholds, and report format defined in `.opencode/templates/adversary-report.md`. Persist every report to `<plan-storage>/adversary/<plan-name>.md` with `mode: plan-review`, following the frontmatter and report naming conventions there.
+Use the severity/priority scale, holistic score, verdict thresholds, and report format defined in the `adversary-report` template. Persist every report to `<plan-storage>/adversary/<plan-name>.md` with `mode: plan-review`, following the frontmatter and report naming conventions there.
 
 ## Conversational output
 
-When delivering the report in-chat, use the conversational variant from `.opencode/templates/adversary-report.md`.
+When delivering the report in-chat, use the conversational variant from the `adversary-report` template.
