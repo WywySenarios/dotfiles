@@ -100,7 +100,7 @@ process risks (e.g., "cycle 3 depends on cycle 2 completing").>
 - Each cycle is a **single paragraph** (not a list) that describes the unit of work.
 - Within the paragraph, include a **sequential list of properties to satisfy** (numbered).
 - Under each property, include a **bullet list** of `- <file path>: <assertion criteria>` that defines the tests that will validate it.
-- **Decide for every cycle** whether its tests are **ephemeral** or **durable** — both are valid choices, see the Ephemeral vs durable cycles section. Append `[ephemeral]` to the title of ephemeral cycles; their tests are written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted. Durable cycles take no marker.
+- **Decide for every cycle** whether its tests are **ephemeral** or **durable** — both are valid choices, see the Ephemeral vs durable cycles section. Append the marker to the title of **every** cycle: `[ephemeral]` or `[durable]`. There is **no default** — an unmarked cycle is an undecided cycle. Ephemeral tests are written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted.
 
 ## Ephemeral vs durable cycles
 
@@ -121,7 +121,7 @@ When the signal is ambiguous, decide by asking: **will this test still be meanin
 
 When you design a plan:
 
-- **Decide for every cycle** whether its tests are ephemeral or durable, and append `[ephemeral]` to the title of ephemeral cycles (e.g., `### Validate old import paths [ephemeral]`). Durable cycles take no marker.
+- **Decide for every cycle** whether its tests are ephemeral or durable, and append the marker to the title of **every** cycle: `[ephemeral]` (e.g., `### Validate old import paths [ephemeral]`) or `[durable]` (e.g., `### Implement the query sanitizer [durable]`). There is **no default** — an unmarked cycle is an undecided cycle.
 - All tests within an ephemeral cycle will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` instead of the project's normal test directory.
 - The test file path in the property list should still use the **normal relative path** (e.g., `tests/test_migration.py`). The Red agent will prepend the ephemeral root.
 - Ephemeral tests **are deleted automatically** as soon as that cycle's Refactor phase completes. You do not need to write a cleanup cycle.

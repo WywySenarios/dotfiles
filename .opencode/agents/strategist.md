@@ -119,7 +119,7 @@ constraints (e.g., "can only merge on weekends").>
 
 ## Phases
 
-### Phase <N>: <short title> [optional: ephemeral]
+### Phase <N>: <short title> [ephemeral | durable]
 
 <Paragraph describing what this phase accomplishes.>
 
@@ -232,7 +232,7 @@ When the signal is ambiguous, decide by asking: **will this validation still be 
 
 When you design a plan:
 
-- **Decide for every phase** whether its validation is ephemeral or durable, and append `[ephemeral]` to the title of ephemeral phases (e.g., `### Phase 3: Remove legacy import shims [ephemeral]`). Durable phases take no marker.
+- **Decide for every phase** whether its validation is ephemeral or durable, and append the marker to the title of **every** phase: `[ephemeral]` (e.g., `### Phase 3: Remove legacy import shims [ephemeral]`) or `[durable]` (e.g., `### Phase 1: Convert config format [durable]`). There is **no default** — an unmarked phase is an undecided phase.
 - Ephemeral validations are **removed automatically** when that phase completes — do not commit them as permanent regression checks.
 - Durable validations stay in the plan and are never marked ephemeral: the End-State Artifact Cleanup **Verify** checklist, the full test suite, lint/type-check gates.
 
