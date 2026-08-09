@@ -133,6 +133,8 @@ All issues found by the adversary must be classified with both a severity and a 
 | SEV-4 | **Low**      | Minor issue, cosmetic, or non-functional defect.                |
 | SEV-5 | **Cosmetic** | Nitpick: style, naming, documentation typo, minor polish.       |
 
+Severity anchors specific to plan reviews: a **plan-text defect** (a false or misleading statement in the plan with no execution impact) is **SEV-4** at most; a **speculative risk** (a hypothetical concern not evidenced by the plan or the repository) is **SEV-5** at most.
+
 ### Priority: P0 through P3
 
 | Level | Label         | Definition                                                     |
@@ -146,37 +148,44 @@ All issues found by the adversary must be classified with both a severity and a 
 
 ## Holistic Score
 
-The holistic score is an **objective, issue-derived health score** from 0.0 to 10.0. It is computed solely from the severity and priority of the issues found — not from subjective taste. A clean plan with no issues scores 10.0. Each issue penalises the score based on its severity and priority.
+The holistic score is an **objective, issue-derived health score** from 0.0 to 10.0. It measures the _materiality_ of the defects found, not the verdict. A clean plan with no issues scores 10.0. The score informs, but never decides, the verdict.
 
 ### Computation
 
-Start at **10.0**. Apply deductions for each issue:
+Start at **10.0**. Apply deductions:
 
-| Severity | Per-issue penalty | Priority | Per-issue penalty |
-| -------- | ----------------- | -------- | ----------------- |
-| SEV-1    | -2.0              | P0       | -2.0              |
-| SEV-2    | -1.5              | P1       | -1.0              |
-| SEV-3    | -1.0              | P2       | -0.5              |
-| SEV-4    | -0.5              | P3       | -0.2              |
-| SEV-5    | -0.2              |          |                   |
+1. **Group issues by root cause.** If multiple issues share one root cause, group them and apply the single worst penalty of the group once. Do not double-count.
+2. **Deduct the larger of the severity penalty and the priority penalty — never both.** Severity and priority measure the same "how bad is this" dimension; charging both inflates the damage.
+3. **Cap non-blocking noise.** The combined deduction from issues that are **SEV-4/SEV-5 and P2/P3** (cosmetic/low nits that do not block `Pass`) is capped at **-1.0** total. A pile of nits can never drag a plan below "Fair".
+4. Floor the result at **0.0**.
 
-For each issue, apply **both** the severity penalty and the priority penalty (additive). Floor the result at **0.0**.
+Penalty table (single deduction = max of the two rows):
 
-If multiple issues overlap the same root cause, do not double-count — group them and apply the highest severity/priority penalty once.
+| Severity | Penalty | Priority | Penalty |
+| -------- | ------- | -------- | ------- |
+| SEV-1    | -3.0    | P0       | -1.5    |
+| SEV-2    | -2.0    | P1       | -1.0    |
+| SEV-3    | -1.0    | P2       | -0.5    |
+| SEV-4    | -0.4    | P3       | -0.2    |
+| SEV-5    | -0.2    |          |         |
+
+Example: a single SEV-2/P1 issue deducts `max(-2.0, -1.0)` = **-2.0**, not -3.0. A SEV-5/P3 nit deducts `max(-0.2, -0.2)` = **-0.2**. Five SEV-5 nits deduct **-0.2 × 5 = -1.0**, floored by the cap, never more.
 
 ### Score interpretation
 
-| Range | Label       | Meaning                                           |
-| ----- | ----------- | ------------------------------------------------- |
-| 9-10  | **Healthy** | No material issues. Ship with confidence.         |
-| 7-8.9 | **Fair**    | Minor issues. Fix before shipping.                |
-| 4-6.9 | **Risky**   | Significant issues. Must resolve before proceed.  |
-| 1-3.9 | **Broken**  | Major defects. Do not proceed without a redesign. |
-| 0     | **Void**    | Catastrophic. Scrap and restart.                  |
+| Range | Label        | Meaning                                           |
+| ----- | ------------ | ------------------------------------------------- |
+| 9-10  | **Healthy**  | No material issues. Ship with confidence.         |
+| 7-8.9 | **Fair**     | Minor issues. Fix before shipping.                |
+| 4-6.9 | **Risky**    | Significant issues. Must resolve before proceed.  |
+| 1-3.9 | **Broken**   | Major defects. Do not proceed without a redesign. |
+| 0     | **Redesign** | Redesign required.                                |
+
+The **score is not the verdict**. A 0.0 score does not imply `Block`: `Block` requires a SEV-1 issue. If the score floors with no SEV-1, still render `Revise`. The score measures materiality; the verdict decides whether the plan may proceed.
 
 ### Verdict thresholds
 
-The verdict is derived deterministically from the issues found and the holistic score. Apply the first matching row from top to bottom:
+The verdict is derived deterministically from the issues found (severity and priority), **not** from the score. Apply the first matching row from top to bottom:
 
 | Verdict    | Trigger                                                                              |
 | ---------- | ------------------------------------------------------------------------------------ |
