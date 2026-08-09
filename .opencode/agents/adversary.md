@@ -58,7 +58,7 @@ verify them against the current state rather than accepting them as context.
    - What edge cases does the plan miss?
    - What error paths are unhandled?
    - Are the test assertions actually testing the right thing?
-   - Do **migration** cycles/phases — tests that validate code/config moved from an old form to a new form — get marked `[ephemeral]`? Do durable end-state behavior tests stay permanent?
+   - For every cycle/phase, judge the **ephemeral vs durable decision** the plan made. Both options are valid — is the one chosen the correct one for what its tests/validation assert? (See "Judging the ephemeral vs durable decision" below.)
    - Do any cycles have hidden dependencies on other cycles?
    - Are there preconditions the plan assumes without verifying?
    - Will the plan break existing functionality? (run the existing test suite to check)
@@ -76,8 +76,18 @@ Some common failure modes include:
 - **Scope gaps** - edge cases, error paths, or states not covered
 - **Testability holes** - properties listed without clear test criteria
 - **Vague properties** - assertions that are falsifiable
-- **Ephemeral marking errors** - a **migration** cycle or phase — one whose tests validate that code or configuration moved from an old form to a new form (grepping for the old pattern's absence, asserting a module/file/symbol no longer resolves, checking a compatibility shim still works) — is usually **ephemeral**; flag it when the plan does not mark it `[ephemeral]`. Conversely, flag `[ephemeral]` cycles/phases whose tests assert durable end-state behavior (a function contract, a return value, a user-visible outcome) that must outlive the plan.
+- **Wrong ephemeral/durable decision** - the plan must decide for every cycle/phase whether its tests/validation are **ephemeral** (deleted when the cycle completes) or **durable** (kept forever). Both options are valid; the decision is wrong when it does not match what the tests/validation assert. Flag a migration cycle/phase not marked `[ephemeral]` when its tests only prove the migration happened (grepping for the old pattern's absence, asserting a module/file/symbol no longer resolves, checking a compatibility shim still works). Conversely, flag `[ephemeral]` cycles/phases whose tests assert durable end-state behavior (a function contract, a return value, a user-visible outcome) that must outlive the plan.
 - **Architectural risks** - design decisions that could cascade into problems
+
+#### Judging the ephemeral vs durable decision
+
+Every cycle/phase must decide between **ephemeral** tests/validations (deleted when the cycle completes) and **durable** ones (kept as permanent coverage). Both are valid choices; the correct one depends on what the tests/validation assert. Judge the decision with these questions:
+
+1. **What does the test/validation assert?** If it proves the migration happened — the old pattern is absent, a module/file/symbol no longer resolves, a compatibility shim works, the transitional format is gone — **ephemeral is correct**. If it asserts behavior that must keep working — a function contract, a return value, a user-visible outcome, an API that keeps existing, the final config format — **durable is correct**.
+2. **Will the assertion still be meaningful after the plan completes?** Yes → durable. No → ephemeral. If the assertion would be trivially true or redundant once the migration is done, marking it durable commits permanent coverage that tests nothing and is especially vulnerable to false positives. If it would still fail on a real regression, marking it ephemeral deletes real coverage.
+3. **How does the test/validation find its target?** A test that relies on **raw string matching of code or matching configuration patterns** — grepping source for a literal string, asserting a config key/value pattern, checking file contents textually — is a strong ephemeral signal. These are **antipatterns for durable tests**: they assert on the form of the code or configuration rather than its behavior, so they are brittle to any cosmetic change and they validate the migration, not the end state. When a test can only express its check as a raw string or config-pattern match, it is almost certainly ephemeral.
+
+Flag both failure directions: migration cycles/phases not marked `[ephemeral]`, and `[ephemeral]` cycles/phases asserting durable end-state behavior. Also flag cycles where the decision is **undiscoverable** — no `[ephemeral]` marker and no stated reasoning in the description — because an undecided cycle cannot be validated.
 
 Do not rewrite the plan. Output is purely diagnostic.
 

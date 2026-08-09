@@ -100,28 +100,31 @@ process risks (e.g., "cycle 3 depends on cycle 2 completing").>
 - Each cycle is a **single paragraph** (not a list) that describes the unit of work.
 - Within the paragraph, include a **sequential list of properties to satisfy** (numbered).
 - Under each property, include a **bullet list** of `- <file path>: <assertion criteria>` that defines the tests that will validate it.
-- Optionally append `[ephemeral]` to the cycle title to mark its tests as **ephemeral** — they will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted. A cycle is ephemeral when its tests will be **irrelevant once the cycle completes** — typically a migration (e.g., "old import path no longer resolves", "legacy config key is absent") — rather than durable end-state behavior.
+- **Decide for every cycle** whether its tests are **ephemeral** or **durable** — both are valid choices, see the Ephemeral vs durable cycles section. Append `[ephemeral]` to the title of ephemeral cycles; their tests are written to `/tmp/opencode/<repo-name>/ephemeral-tests/` and automatically deleted when the plan is exhausted. Durable cycles take no marker.
 
-## Ephemeral Tests
+## Ephemeral vs durable cycles
 
-Some scenarios (e.g., import migration, throwaway schema validation, intermediate refactoring steps) require a test that will be **irrelevant once that TDD cycle completes**. These tests should be marked as **ephemeral**.
+Every cycle's tests carry a decision: are they **ephemeral** — valid only for this cycle, deleted when it completes — or **durable** — end-state behavior, kept as permanent regression coverage? Both are valid choices; the correct one depends on what the tests assert.
 
-The test is irrelevant because it validates the **migration itself**, not the behavior of the migrated code: it asserts that code or configuration moved from an old form to a new form — e.g., a renamed import now resolves, a deprecated config key is gone, a file has been relocated, a schema was converted. Once the migration completes, the old form no longer exists to test against, and the new form's behavior is covered by the end-state tests of later cycles.
+The failure costs of a wrong choice differ in kind, not in whether they matter: marking a durable test ephemeral deletes real coverage forever; marking an ephemeral test durable commits tests that validate nothing after the plan. Decide on the merits, not on which failure is scarier. If there is a tension, you may need to split into multiple cycles.
 
-Mark a cycle as ephemeral when **any** of these hold:
+An ephemeral test validates the **migration itself**, not the behavior of the migrated code: it asserts that code or configuration moved from an old form to a new form — e.g., a renamed import now resolves, a deprecated config key is gone, a file has been relocated, a schema was converted. Once the migration completes, the old form no longer exists to test against, and the new form's behavior is covered by the end-state tests of later cycles.
+
+Choose **ephemeral** when **any** of these hold:
 
 - The cycle is a **migration** — it moves existing code/config from an old form to a new form (rename, relocation, format conversion, import path change).
 - Its tests assert on the **presence or absence of the old/new forms** (e.g., "old import path no longer resolves", "legacy config key is absent"), not on behavior a user could observe.
 
-A cycle is **NOT** ephemeral when its tests assert durable end-state **behavior** — a function's contract, a return value, a user-visible outcome, an API that will keep existing after the plan. When in doubt, do **not** mark it ephemeral: wrongly deleting a permanent test is irreversible coverage loss, while keeping a harmless throwaway test only costs clutter.
+Choose **durable** when the tests assert end-state **behavior** — a function's contract, a return value, a user-visible outcome, an API that will keep existing after the plan, the final config format.
+
+When the signal is ambiguous, decide by asking: **will this test still be meaningful after the plan completes?** If it will (it pins down behavior that keeps existing), choose durable. If it will not (it only proves the old form is gone), choose ephemeral. State the choice in the cycle description — the adversary will judge whether the decision is correct.
 
 When you design a plan:
 
-- **Mark a migration cycle as ephemeral** by appending `[ephemeral]` to the cycle title (e.g., `### Validate old import paths [ephemeral]`).
-- All tests within that cycle will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` instead of the project's normal test directory.
+- **Decide for every cycle** whether its tests are ephemeral or durable, and append `[ephemeral]` to the title of ephemeral cycles (e.g., `### Validate old import paths [ephemeral]`). Durable cycles take no marker.
+- All tests within an ephemeral cycle will be written to `/tmp/opencode/<repo-name>/ephemeral-tests/` instead of the project's normal test directory.
 - The test file path in the property list should still use the **normal relative path** (e.g., `tests/test_migration.py`). The Red agent will prepend the ephemeral root.
 - Ephemeral tests **are deleted automatically** as soon as that cycle's Refactor phase completes. You do not need to write a cleanup cycle.
-- For standard behavior tests, omit the `[ephemeral]` marker.
 
 ## Plan Output Location
 
