@@ -229,6 +229,13 @@ invoked_by: <agent_name> | user
 
 The full report content goes after the frontmatter.
 
+### Report discipline
+
+- **At most 8 issues**, listed **highest severity first** (ties: highest priority first). Drop or merge findings beyond the 8 most material.
+- **Description cells ≤ 200 characters.** Move detail to the corresponding failure-proof row.
+- **One finding, once.** Each finding appears in the Issues table; the failure proof gives evidence; the Summary states the bottom line. Do not restate a finding's full description in more than one section.
+- **One Suggested Action per issue**, highest severity first. Do not restate the issue description in the action.
+
 ```md
 ### Issues Found
 
@@ -253,9 +260,11 @@ The full report content goes after the frontmatter.
 
 ### Summary
 
-...
+<2-4 sentences. Sentence 1: verdict and score. Sentence 2: what must change. Sentence 3: what is acceptable as-is. Lead with the bottom line.>
 
 ### Suggested Actions
+
+1. <one action per issue, highest severity first>
 ```
 
 ## Conversational Output
@@ -288,7 +297,11 @@ The full report content goes after the frontmatter.
 
 ### Summary
 
-<2-3 sentences verdict, what must change, what is acceptable.>
+<2-4 sentences. Sentence 1: verdict and score. Sentence 2: what must change. Sentence 3: what is acceptable as-is. Lead with the bottom line.>
+
+### Suggested Actions
+
+1. <one action per issue, highest severity first>
 ```
 
 ### Code Review output
@@ -314,5 +327,9 @@ The full report content goes after the frontmatter.
 
 ### Summary
 
-...
+<2-4 sentences. Sentence 1: verdict and score. Sentence 2: what must change. Sentence 3: what is acceptable as-is. Lead with the bottom line.>
+
+### Suggested Actions
+
+1. <one action per issue, highest severity first>
 ```
