@@ -70,25 +70,4 @@ When editing a test file, check if the path is under `/tmp/opencode/<repo-name>/
 
 ### Report to Cycle
 
-When the edit completes, give a summary:
-
-```md
-## TEST EDIT — done
-
-**Files changed:**
-
-| File     | Change                                |
-| -------- | ------------------------------------- |
-| `<path>` | `<line>` — (one-sentence description) |
-
-**Test results:**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-
-**Edit type:** `<correction | refactor | specification-change>`
-**Notes:** What was changed and why.
-```
+When the edit completes, give a summary using the TEST EDIT report format defined in `.opencode/templates/digest.md`.

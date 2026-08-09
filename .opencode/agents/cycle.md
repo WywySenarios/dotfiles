@@ -102,103 +102,14 @@ If any phase determines a test must be modified (not a new test, but an edit to 
 
 ## Output
 
-Output these so the user can read the conversation history later.
+Output these so the user can read the conversation history later. Use the report formats defined in `.opencode/templates/digest.md`:
 
-### RED phase
+- RED phase → CYCLE — RED done format
+- GREEN phase → CYCLE — GREEN done format
+- REFACTOR phase → CYCLE — REFACTOR done format
+- Plan exhausted → CYCLE — plan complete format
 
-```md
-## CYCLE — RED done
-
-**Plan item:** `<item text>`
-
-**Files changed:**
-
-| File     | Change                                |
-| -------- | ------------------------------------- |
-| `<path>` | `<line>` — (one-sentence description) |
-
-**Test results:**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-
-**Notes:** What the test demands. Why it fails for the right reason.
-**Next item** (after approval): Green phase.
-```
-
-### GREEN phase
-
-```md
-## CYCLE — GREEN done
-
-**Plan item:** `<item text>`
-
-**Files changed:**
-
-| File     | Change                                |
-| -------- | ------------------------------------- |
-| `<path>` | `<line>` — (one-sentence description) |
-
-**Test results:**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-
-**Notes:** What production code was written.
-**Next item** (after approval): Refactor phase.
-```
-
-### REFACTOR phase
-
-```md
-## CYCLE — REFACTOR done
-
-**Plan item:** `<item text>`
-
-**Files changed:**
-
-| File     | Change                                |
-| -------- | ------------------------------------- |
-| `<path>` | `<line>` — (one-sentence description) |
-
-**Test results:**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-
-**Notes:** What was cleaned up and why. No behaviour changed.
-**Next item** (after approval): Next plan item.
-```
-
-### Final report — when plan is exhausted
-
-```md
-## CYCLE — plan complete
-
-**Plan exhausted.** All items completed:
-
-| #   | Item     | Red | Green | Refactor | Ephemeral    |
-| --- | -------- | --- | ----- | -------- | ------------ |
-| 1   | `<item>` | ✅  | ✅    | ✅       | ❌           |
-| 2   | `<item>` | ✅  | ✅    | ✅       | ✅ (cleaned) |
-
-**Total test results (final suite):**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-```
+Include the **Plan item** line from the digest's cycle report formats so the user can trace which item the report refers to.
 
 **STOP. Wait for user approval to continue.**
 

@@ -111,27 +111,6 @@ silent no-op.
 
 ### Report to user
 
-When the Red phase completes, give a summary to the user with this template:
-
-```md
-## RED — done
-
-**Files changed:**
-
-| File     | Change                                |
-| -------- | ------------------------------------- |
-| `<path>` | `<line>` — (one-sentence description) |
-
-**Test results:**
-
-| Result  | Count |
-| ------- | ----- |
-| Passed  | N     |
-| Failed  | N     |
-| Skipped | N     |
-
-**Notes:** What the test demands. Why it fails for the right reason.
-**Next:** Green phase (green agent writes implementation).
-```
+When the Red phase completes, give a summary to the user using the RED phase report format defined in `.opencode/templates/digest.md`.
 
 **STOP. Wait for user approval to continue.**
