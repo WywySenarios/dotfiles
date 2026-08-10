@@ -78,6 +78,18 @@ assistant: Clients are marked as failed in the `connectToServer` function in src
 
 Remove temporary files, scripts, and artifacts when done. You should leave the workspace cleaner than when you arrived.
 
+## Secure Code
+
+Security is a property of the code you write, not a review afterthought. This repo encrypts secrets with `sops` and scans with `gitleaks` (CI workflow + optional pre-commit hook) — follow those conventions and never work around them.
+
+- **Never hardcode secrets.** No API keys, tokens, passwords, or connection strings in code, configs, tests, or commit messages. Secrets live in sops-encrypted files or environment variables. If you find a committed secret, report it — never copy it into output or logs.
+- **Validate all external input.** Treat user input, HTTP parameters, file paths, env vars, and network responses as untrusted. Bound lengths and ranges, whitelist where possible, fail closed.
+- **Never build queries or commands by string concatenation.** Use parameterized queries / prepared statements and safe execution APIs. Escape output for its context (HTML, SQL, shell, URL).
+- **Do not log sensitive data.** Redact PII, tokens, and passwords in logs, error messages, debug output, and reports.
+- **Fail closed, least privilege.** Deny by default; request only the permissions you need.
+- **Pin dependencies.** Prefer pinned versions from trusted registries; flag anything you cannot verify.
+- **When in doubt, ask.** If a request would produce insecure code, say so and propose the secure alternative instead of silently implementing the risk.
+
 ## Concurrent Updates
 
 You do not have full ownership or autonomy over hte code. When a file has been updated or removed since the last time you saw or touched it, follow these rules:

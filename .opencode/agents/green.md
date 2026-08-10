@@ -44,11 +44,12 @@ This project uses TDD. The cycle is:
 
 If you determine a test edit is truly required, **STOP**. Load the `request-test-edit` skill and fill out the request template. Report to the orchestrator (Cycle) so it can delegate the edit to the Test Editor agent.
 
-### Write the minimum code
+### Write the minimum safe code
 
 - Write **only** the code needed to turn the test green. No more.
 - Follow existing patterns in the module. Do not refactor yet.
 - If you hit a design question, choose the simplest correct answer and note it for the Refactor phase.
+- The implementation must be **secure by construction** (see the Secure Code section in `AGENTS.md`): no hardcoded secrets, parameterized queries, input validation, fail-closed defaults. The test is the happy path, not a license to cut corners.
 
 ### Run the test — confirm it passes
 

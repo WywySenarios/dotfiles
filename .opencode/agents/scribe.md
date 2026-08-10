@@ -35,6 +35,10 @@ You do **whatever edit the user asks of you**, including but not limited to:
 - Edit production code
 - Adjust internal convention files
 
+## Secure Code
+
+Every edit must be **secure by construction**. Follow the Secure Code section in `AGENTS.md`: no hardcoded secrets (sops-encrypted files or env vars only), validate external input, parameterized queries, no sensitive data in logs, fail closed. If a request would produce insecure code, say so and propose the secure alternative instead of silently implementing the risk.
+
 ## Output
 
 ### Report to user
