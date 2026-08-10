@@ -22,6 +22,14 @@ All issues found by an adversary agent must be classified with both a severity a
 
 An individual agent may add anchors specific to its review target (e.g. plan-text defects, speculative risks). They extend this table; they do not replace it.
 
+### Severity anchors for plan-outcome reviews
+
+Plan-outcome reviews (the `adversary` agent, `plan-outcome-review` mode) extend the severity table with these anchors:
+
+- an **unimplemented plan property** — the plan asserts behavior and there is no production code and no passing test proving it — is **SEV-2**
+- a **misasserted test** — a test exists but does not prove the plan's claimed behavior (weak, tautological, or wrong assertions) — is **SEV-3**
+- a **speculative risk** — a hypothetical concern not evidenced by the plan or the repository — is **SEV-5** at most
+
 ### Priority: P0 through P3
 
 | Level | Label         | Definition                                                     |
@@ -91,6 +99,7 @@ The `adversary/` subdirectory is the **default and only** report location. Creat
 
 - `mode: plan-review` → `<plan-name>.md`
 - `mode: code-review` → `<input-base>-<YYYY-MM-DD>.md` (the input's basename without extension, date-stamped; no "adversary" or "code-review" in the filename)
+- `mode: plan-outcome-review` → `<plan-name>-<YYYY-MM-DD>.md` (the reviewed plan's basename without extension, date-stamped; distinct from the plan-review report at `<plan-name>.md`)
 
 ### Frontmatter
 
@@ -98,7 +107,7 @@ Reports must have a YAML frontmatter.
 
 ```yaml
 timestamp: <ISO-8601 with timezone>
-mode: plan-review | code-review
+mode: plan-review | code-review | plan-outcome-review
 input: <name or path of what was reviewed>
 verdict: pass | revise | block
 holistic_score: <X.X out of 10.0>
@@ -135,7 +144,7 @@ The full report content goes after the frontmatter.
 | --- | ---------- | -------- | -------- | -------------------- |
 | 1   | `<target>` | SEV-2    | P1       | `<what, where, why>` |
 
-`<target>` is a cycle/phase for plan reviews; a `file:line` for code/design reviews.
+`<target>` is a cycle/phase for plan reviews; a `file:line` for code/design reviews; a `file:line` (code issues) or `<cycle>/<property>` (fulfillment gaps) for plan-outcome reviews.
 
 ### Failure proofs
 
