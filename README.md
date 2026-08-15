@@ -2,9 +2,32 @@
 
 Welcome to my dotfiles repo!
 
-I run bare Debian at home, and this repo packages everything so I can take my personal dev environment wherever I go.
+I run bare Debian (bash) on my dev machine and macOS (zsh) on my laptop. This repo packages everything so I can take my personal dev environment wherever I go.
 
 This repo contains submodules. Run `git submodule update --init --recursive` to install the submodules.
+
+## Shell configuration
+
+Shell config is split three ways so bash and zsh share environment but keep their own behaviour:
+
+| Path                     | Contents                                                                                 |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `shell.d/`               | Shared environment (POSIX-sh): `PATH`, opencode config, nvm, go. Sourced by both shells. |
+| `.bashrc` → `.bashrc.d/` | bash-only: history, prompt, aliases, completion.                                         |
+| `.zshrc` → `.zshrc.d/`   | zsh-only: history, prompt, aliases, completion.                                          |
+
+The loaders in `.bashrc`/`.zshrc` source `*.sh` and `*.env` from a directory (top level and one level deep) and are portable — no `globstar`, no `readlink -f` — so they run on macOS's bash 3.2 and zsh alike.
+
+Install by symlinking the entry files into `$HOME`:
+
+```bash
+ln -s ~/dotfiles/.bashrc ~/.bashrc
+ln -s ~/dotfiles/.bash_profile ~/.bash_profile
+ln -s ~/dotfiles/.zshrc ~/.zshrc
+ln -s ~/dotfiles/.zprofile ~/.zprofile
+```
+
+`~/.zprofile` handles Homebrew on macOS. If your existing `~/.zprofile` also loads nvm, remove that block — nvm now lives in `shell.d/nvm.sh`.
 
 ## Installation Scripts
 

@@ -19,27 +19,23 @@ setup() {
 	done < <(find "$DOTFILES/.bashrc.d" -name '*.sh' -print0)
 }
 
-@test ".bashrc.d discovery: \$PWD fallback" {
+@test "load_dir sources *.sh from a directory" {
 	TMPDIR="$(mktemp -d)"
-	mkdir -p "$TMPDIR/.bashrc.d"
-	echo 'echo "discovered-ok"' > "$TMPDIR/.bashrc.d/00-test.sh"
+	mkdir -p "$TMPDIR/shell.d"
+	echo 'echo "loaded-ok"' > "$TMPDIR/shell.d/00-test.sh"
 
 	run bash -c '
-		cd "$1" || exit 1
-		bashrc_d=""
-		candidate="${BASH_SOURCE[0]%/*}"
-		if [ -n "$candidate" ] && [ "$candidate" != "${BASH_SOURCE[0]}" ]; then
-			[ -d "$candidate/.bashrc.d" ] && bashrc_d="$candidate/.bashrc.d"
-		fi
-		[ -z "$bashrc_d" ] && { candidate="$(dirname "$(readlink -f "$HOME/.bashrc" 2>/dev/null || true)")"; [ -d "$candidate/.bashrc.d" ] && bashrc_d="$candidate/.bashrc.d"; }
-		[ -z "$bashrc_d" ] && { [ -d "$PWD/.bashrc.d" ] && bashrc_d="$PWD/.bashrc.d"; }
-		[ -z "$bashrc_d" ] && { [ -d "$HOME/.bashrc.d" ] && bashrc_d="$HOME/.bashrc.d"; }
-		if [ -d "$bashrc_d" ]; then
-			for f in "$bashrc_d"/*.sh; do
-				[ -r "$f" ] && . "$f"
+		load_dir() {
+			_d="$1"
+			[ -d "$_d" ] || return 0
+			for _f in "$_d"/*.sh "$_d"/*.env "$_d"/*/*.sh "$_d"/*/*.env; do
+				[ -r "$_f" ] && . "$_f"
 			done
-		fi
+			unset _d _f
+		}
+		load_dir "$1/shell.d"
 	' -- "$TMPDIR"
+	assert_output "loaded-ok"
 	rm -rf "$TMPDIR"
 
 }
