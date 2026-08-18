@@ -48,3 +48,7 @@ Never reference TDD plan phases (RED, GREEN, REFACTOR) in commit descriptions or
 ```bash
 git commit -m "<type>(<scope>): <description>"
 ```
+
+## Do NOT push
+
+If the user has asked you to commit, you should NOT push code.
