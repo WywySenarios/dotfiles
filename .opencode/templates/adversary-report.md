@@ -30,6 +30,14 @@ Plan-outcome reviews (the `adversary` agent, `plan-outcome-review` mode) extend 
 - a **misasserted test** — a test exists but does not prove the plan's claimed behavior (weak, tautological, or wrong assertions) — is **SEV-3**
 - a **speculative risk** — a hypothetical concern not evidenced by the plan or the repository — is **SEV-5** at most
 
+### Severity anchors for plan reviews
+
+Plan reviews (the `plan-adversary` agent) extend the severity table with these anchors:
+
+- a **loud transcription defect** — a plan-text error (typo, wrong name, stale path) that contradicts the repository on contact (nonexistent path, unresolvable symbol) and would be caught by the executor within seconds — is **SEV-4**, **P1**, and triggers `Revise` but never `Block`. Loud transcription defects are **mechanically fixable**: the Suggested Action carries the corrected value, and the fix is verified by resolving the reference against the repository — no re-audit is required when they are the only findings (a _transcription-only_ revision).
+- a **silent wrong-target defect** — a plan-text error that is internally coherent but resolves to a different existing target and would execute without error against the wrong file, symbol, or data — receives **full severity by real outcome** (SEV-1 when it could cause data loss, corruption, a security breach, or total outage)
+- a **speculative risk** — a hypothetical concern not evidenced by the plan or the repository — is **SEV-5** at most
+
 ### Priority: P0 through P3
 
 | Level | Label         | Definition                                                     |
