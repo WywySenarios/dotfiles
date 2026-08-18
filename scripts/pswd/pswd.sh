@@ -49,42 +49,11 @@ fi
 
 # CLI mode
 SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-case "${1:-help}" in
-alnum)
-	gen_alnum "${2:-}"
-	;;
-num)
-	gen_num "${2:-}"
-	;;
-secure)
-	gen_secure "${2:-}"
-	;;
-common)
-	gen_common "${2:-}"
-	;;
---bcrypt)
-	# Usage: --bcrypt [mode] [length]
-	#   mode: alnum|num|secure|common (default: common)
-	#   length: password length (default: 24)
-	if [[ "${2:-}" =~ ^(alnum|num|secure|common)$ ]]; then
-		pwd="$(gen_"${2}" "${3:-$DEFAULT_LENGTH}")"
-	else
-		pwd="$(gen_common "${2:-$DEFAULT_LENGTH}")"
-	fi
-	echo "# Password: $pwd" >&2
-	echo "$pwd" | "$SCRIPT_DIR/hash_bcrypt.py"
-	;;
---argon2id)
-	if [[ "${2:-}" =~ ^(alnum|num|secure|common)$ ]]; then
-		pwd="$(gen_"${2}" "${3:-$DEFAULT_LENGTH}")"
-	else
-		pwd="$(gen_common "${2:-$DEFAULT_LENGTH}")"
-	fi
-	echo "# Password: $pwd" >&2
-	echo "$pwd" | "$SCRIPT_DIR/hash_argon2id.py"
-	;;
-*)
-	echo "Usage: pswd.sh <mode> [length]" >&2
+
+usage() {
+	echo "Usage: pswd.sh <mode> [length] [--bcrypt|--argon2id]" >&2
+	echo "       pswd.sh --bcrypt [mode] [length]" >&2
+	echo "       pswd.sh --argon2id [mode] [length]" >&2
 	echo "" >&2
 	echo "Modes:" >&2
 	echo "  alnum    alphanumeric (a-zA-Z0-9)" >&2
@@ -93,6 +62,48 @@ common)
 	echo "  common   alphanumeric + safe symbols only" >&2
 	echo "  --bcrypt [mode] [length]   generate password + bcrypt hash" >&2
 	echo "  --argon2id [mode] [length] generate password + argon2id hash" >&2
-	exit 1
-	;;
-esac
+}
+
+hash_mode=""
+positional=()
+for arg in "$@"; do
+	case "$arg" in
+	--bcrypt | --argon2id)
+		hash_mode="${arg#--}"
+		;;
+	*)
+		positional+=("$arg")
+		;;
+	esac
+done
+set -- "${positional[@]}"
+
+mode="${1:-}"
+len="${2:-}"
+
+if [[ -z "$mode" ]]; then
+	# e.g. `pswd.sh --bcrypt` → default to common mode
+	if [[ -n "$hash_mode" ]]; then
+		mode="common"
+	else
+		usage
+		exit 1
+	fi
+elif [[ ! "$mode" =~ ^(alnum|num|secure|common)$ ]]; then
+	# e.g. `pswd.sh --bcrypt 32` → treat 32 as the length in common mode
+	if [[ -n "$hash_mode" ]]; then
+		len="$mode"
+		mode="common"
+	else
+		usage
+		exit 1
+	fi
+fi
+
+password="$(gen_"$mode" "$len")"
+if [[ -n "$hash_mode" ]]; then
+	echo "# Password: $password" >&2
+	echo "$password" | "$SCRIPT_DIR/hash_${hash_mode}.py"
+else
+	echo "$password"
+fi
