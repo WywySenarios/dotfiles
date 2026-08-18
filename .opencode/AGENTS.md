@@ -74,6 +74,10 @@ user: Where are errors from the client handled?
 assistant: Clients are marked as failed in the `connectToServer` function in src/services/process.ts:712.
 </example>
 
+## TDD Plan Phases
+
+TDD plan phases (RED, GREEN, REFACTOR) describe the development process, not the code. Never write them in code comments, code itself, commit descriptions, or any other deliverable the user sees. The finished work must read as a coherent product, not as a sequence of process stages.
+
 ## Clean Up After Yourself
 
 Remove temporary files, scripts, and artifacts when done. You should leave the workspace cleaner than when you arrived.

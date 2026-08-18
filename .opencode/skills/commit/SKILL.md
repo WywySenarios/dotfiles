@@ -43,6 +43,8 @@ The message follows [Conventional Commits](https://www.conventionalcommits.org/)
 
 Common types: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`.
 
+Never reference TDD plan phases (RED, GREEN, REFACTOR) in commit descriptions or bodies. The commit describes what the change does, not which process stage produced it.
+
 ```bash
 git commit -m "<type>(<scope>): <description>"
 ```
