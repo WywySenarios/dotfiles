@@ -18,16 +18,19 @@ Shell config is split three ways so bash and zsh share environment but keep thei
 
 The loaders in `.bashrc`/`.zshrc` source `*.sh` and `*.env` from a directory (top level and one level deep) and are portable — no `globstar`, no `readlink -f` — so they run on macOS's bash 3.2 and zsh alike.
 
-Install by symlinking the entry files into `$HOME`:
+Install with the deploy scripts (or symlink manually):
 
 ```bash
-ln -s ~/dotfiles/.bashrc ~/.bashrc
-ln -s ~/dotfiles/.bash_profile ~/.bash_profile
-ln -s ~/dotfiles/.zshrc ~/.zshrc
-ln -s ~/dotfiles/.zprofile ~/.zprofile
+# Debian (bash)
+install/.bashrc.sh
+
+# macOS (zsh)
+install/.zsh.sh
 ```
 
-`~/.zprofile` handles Homebrew on macOS. If your existing `~/.zprofile` also loads nvm, remove that block — nvm now lives in `shell.d/nvm.sh`.
+Both scripts are idempotent: existing non-symlinks are backed up to `*.bak` before linking, and re-running replaces stale symlinks.
+
+`~/.zprofile` handles Homebrew on macOS. nvm is loaded from `shell.d/nvm.sh`, so no nvm block belongs in `~/.zprofile`.
 
 ## Installation Scripts
 
