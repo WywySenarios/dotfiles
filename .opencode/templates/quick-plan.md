@@ -2,7 +2,7 @@
 
 Use for small-to-medium, single-repo tasks when the user explicitly asks for a plan. The quick-plan is **ephemeral**: write it, get approval, do the work, delete it. The durable record of the task is the code and the edit report — not this file. For full migrations, policies, or cross-repo changes, the `strategist` agent owns the plan.
 
-File location and naming: `~/plans/quick-<name>.md`.
+File location and naming: `${PLAN_STORAGE_PATH:-~/plans}/quick-<name>.md`.
 
 ```md
 ---

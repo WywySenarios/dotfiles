@@ -7,7 +7,6 @@ permission:
   question: allow
   edit:
     "*": deny
-    "~/plans/**": allow
     "/tmp/opencode/**": "allow"
   doom_loop: ask
 ---
@@ -63,7 +62,7 @@ Before executing the first plan item, record the repository state the plan will 
 
 1. Determine the **project root path** (the repository being worked on).
 2. Run `git -C <project-root> rev-parse HEAD` to capture the current HEAD commit.
-3. When the plan came from a plan file, write the baseline marker to `<plan-storage>/<plan-name>.baseline` (same directory as the plan file) containing the repo root, the HEAD sha, and the start timestamp. Use the `edit` tool — `~/plans/**` is permitted.
+3. When the plan came from a plan file, write the baseline marker to `<plan-storage>/<plan-name>.baseline` (same directory as the plan file) containing the repo root, the HEAD sha, and the start timestamp. Use the `edit` tool.
 4. If the baseline cannot be captured (not a git repository, no HEAD, or the plan was provided inline with no file path): note it and continue. Validation at exhaustion will then use **plan-only scope** — the adversary focuses on the plan's stated areas from the current repository state.
 
 ### Phase 1 — RED (write failing test)

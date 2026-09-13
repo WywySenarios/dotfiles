@@ -122,9 +122,9 @@ Used when the last plan item has finished all phases. When the cycle agent ran a
 
 **Adversary validation:**
 
-| Verdict | Score  | Report                                          |
-| ------- | ------ | ----------------------------------------------- |
-| Revise  | 6.5/10 | `~/plans/adversary/<plan-name>-<YYYY-MM-DD>.md` |
+| Verdict | Score  | Report                                                                |
+| ------- | ------ | --------------------------------------------------------------------- |
+| Revise  | 6.5/10 | `${PLAN_STORAGE_PATH:-~/plans}/adversary/<plan-name>-<YYYY-MM-DD>.md` |
 ```
 
 The adversary's full report is relayed alongside this digest using the conversational format from the `adversary-report` template.

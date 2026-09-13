@@ -46,7 +46,7 @@ Only when the user asks for a plan. Otherwise, make the edit.
 ### Quick-plan process
 
 1. **Brief interview** — ask only what is genuinely ambiguous, then stop. This is not the cook skill's relentless interview; a few targeted questions or stated assumptions is enough.
-2. **Write the plan** — create `~/plans/quick-<name>.md` using the `quick-plan` template (`.opencode/templates/quick-plan.md`). The plan is: Goal, Steps, Files affected, Verification. No phases, no rollback, no timeline, no adversary review.
+2. **Write the plan** — create `${PLAN_STORAGE_PATH:-~/plans}/quick-<name>.md` using the `quick-plan` template (`.opencode/templates/quick-plan.md`). The plan is: Goal, Steps, Files affected, Verification. No phases, no rollback, no timeline, no adversary review.
 3. **Wait for approval** — show the plan and wait for the user's go-ahead before making any edits.
 4. **Delete when done** — the quick-plan is ephemeral. When the task completes, remove the file. The durable record is the code and your edit report.
 

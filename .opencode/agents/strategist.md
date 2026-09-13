@@ -7,7 +7,6 @@ permission:
   question: allow
   edit:
     "*": allow
-    "~/plans/**": allow
     "/tmp/opencode/**": "allow"
   doom_loop: ask
 ---
