@@ -1,5 +1,25 @@
 # General style guide
 
+## Wrapping
+
+Do not wrap text. Prefer to create multiple sentences separated by line breaks. This is especially important in markdown files and code comments.
+
+Do not do this:
+
+```yaml
+# Dedicated XFS disk (scsi1 on the files VM) backing the tree. The mount below
+# adds pquota so the per-service XFS project quotas are enforced.
+nfs_data_device: /dev/sdb
+```
+
+Opt for this style instead:
+
+```yaml
+# Dedicated XFS disk (scsi1 on the files VM) backing the tree.
+# The mount below adds pquota so the per-service XFS project quotas are enforced.
+nfs_data_device: /dev/sdb
+```
+
 ## Comments
 
 Comments provide value when the reader understands the code faster, and useless comments hurt when they crowd out valuable ones. A comment is noise if a reader could delete it, read the code, and reconstruct everything important.
