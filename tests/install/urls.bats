@@ -24,3 +24,8 @@ setup() {
 	run curl -fsSLI --max-time 10 "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
 	assert_success
 }
+
+@test "kind download URL is reachable" {
+	run curl -fsSLI --max-time 10 "https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-amd64"
+	assert_success
+}
