@@ -29,3 +29,13 @@ setup() {
 	run curl -fsSLI --max-time 10 "https://kind.sigs.k8s.io/dl/v0.33.0/kind-linux-amd64"
 	assert_success
 }
+
+@test "proxmox-auto-install-assistant keyring URL is reachable" {
+	run curl -fsSLI --max-time 10 "https://enterprise.proxmox.com/debian/proxmox-archive-keyring-trixie.gpg"
+	assert_success
+}
+
+@test "proxmox-auto-install-assistant trixie repository metadata is reachable" {
+	run curl -fsSLI --max-time 10 "http://download.proxmox.com/debian/pve/dists/trixie/Release"
+	assert_success
+}
