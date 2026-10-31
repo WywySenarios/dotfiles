@@ -9,7 +9,7 @@
     "**/venv/*": true,
     "**/dist/*": true,
     "**/build/*": true,
-    "**/target/*": true,
+    "**/target/*": true
   },
   "files.watcherExclude": {
     "**/.git": true,
@@ -21,7 +21,7 @@
     "**/venv/*": true,
     "**/dist/*": true,
     "**/build/*": true,
-    "**/target/*": true,
+    "**/target/*": true
   },
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.colorTheme": "Dark Modern",
@@ -35,7 +35,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "notebook.defaultFormatter": "esbenp.prettier-vscode",
   "[shellscript]": {
-    "editor.defaultFormatter": "mkhl.shfmt",
+    "editor.defaultFormatter": "mkhl.shfmt"
   },
   "[go]": {
     "editor.defaultFormatter": "golang.go"
