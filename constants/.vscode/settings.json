@@ -26,6 +26,7 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.colorTheme": "Dark Modern",
   "python.analysis.typeCheckingMode": "strict",
+  "python.terminal.activateEnvironment": false,
   "editor.renderWhitespace": "all",
   "terminal.integrated.initialHint": false,
   "chat.disableAIFeatures": true,
