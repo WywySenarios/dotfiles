@@ -37,7 +37,10 @@
     "editor.defaultFormatter": "mkhl.shfmt",
   },
   "[go]": {
-    "editor.defaultFormatter": "golang.go",
+    "editor.defaultFormatter": "golang.go"
+  },
+  "files.associations": {
+    "*.rmd": "markdown"
   },
   "editor.tabSize": 2
 }
